@@ -6,5 +6,5 @@ find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
 
 project(stm32_rs485)
 
-# List all your source files here 
+# List all source files here 
 target_sources(app PRIVATE src/main.c)
