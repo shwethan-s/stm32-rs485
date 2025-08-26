@@ -1,0 +1,368 @@
+ZEPHYR_ACPICA_MODULE_DIR := C:/Work/zephyrproject/modules/lib/acpica
+menu "acpica (C:/Work/zephyrproject/modules/lib/acpica)"
+osource "$(ZEPHYR_ACPICA_KCONFIG)"
+config ZEPHYR_ACPICA_MODULE
+	bool
+	default y
+endmenu
+ZEPHYR_CMSIS_MODULE_DIR := C:/Work/zephyrproject/modules/hal/cmsis
+menu "cmsis (C:/Work/zephyrproject/modules/hal/cmsis)"
+osource "$(ZEPHYR_CMSIS_KCONFIG)"
+config ZEPHYR_CMSIS_MODULE
+	bool
+	default y
+endmenu
+ZEPHYR_CMSIS_DSP_MODULE_DIR := C:/Work/zephyrproject/modules/lib/cmsis-dsp
+menu "cmsis-dsp (C:/Work/zephyrproject/modules/lib/cmsis-dsp)"
+osource "$(ZEPHYR_CMSIS_DSP_KCONFIG)"
+config ZEPHYR_CMSIS_DSP_MODULE
+	bool
+	default y
+endmenu
+ZEPHYR_CMSIS_NN_MODULE_DIR := C:/Work/zephyrproject/modules/lib/cmsis-nn
+menu "cmsis-nn (C:/Work/zephyrproject/modules/lib/cmsis-nn)"
+osource "$(ZEPHYR_CMSIS_NN_KCONFIG)"
+config ZEPHYR_CMSIS_NN_MODULE
+	bool
+	default y
+endmenu
+ZEPHYR_CMSIS_6_MODULE_DIR := C:/Work/zephyrproject/modules/hal/cmsis_6
+menu "cmsis_6 (C:/Work/zephyrproject/modules/hal/cmsis_6)"
+osource "$(ZEPHYR_CMSIS_6_KCONFIG)"
+config ZEPHYR_CMSIS_6_MODULE
+	bool
+	default y
+endmenu
+ZEPHYR_FATFS_MODULE_DIR := C:/Work/zephyrproject/modules/fs/fatfs
+menu "fatfs (C:/Work/zephyrproject/modules/fs/fatfs)"
+osource "$(ZEPHYR_FATFS_KCONFIG)"
+config ZEPHYR_FATFS_MODULE
+	bool
+	default y
+endmenu
+ZEPHYR_ADI_MODULE_DIR := C:/Work/zephyrproject/modules/hal/adi
+config ZEPHYR_ADI_MODULE
+	bool
+	default y
+ZEPHYR_HAL_AFBR_MODULE_DIR := C:/Work/zephyrproject/modules/hal/afbr
+menu "hal_afbr (C:/Work/zephyrproject/modules/hal/afbr)"
+osource "$(ZEPHYR_HAL_AFBR_KCONFIG)"
+config ZEPHYR_HAL_AFBR_MODULE
+	bool
+	default y
+
+config ZEPHYR_HAL_AFBR_MODULE_BLOBS
+	bool
+endmenu
+ZEPHYR_HAL_AMBIQ_MODULE_DIR := C:/Work/zephyrproject/modules/hal/ambiq
+menu "hal_ambiq (C:/Work/zephyrproject/modules/hal/ambiq)"
+osource "$(ZEPHYR_HAL_AMBIQ_KCONFIG)"
+config ZEPHYR_HAL_AMBIQ_MODULE
+	bool
+	default y
+endmenu
+ZEPHYR_ATMEL_MODULE_DIR := C:/Work/zephyrproject/modules/hal/atmel
+config ZEPHYR_ATMEL_MODULE
+	bool
+	default y
+ZEPHYR_HAL_BOUFFALOLAB_MODULE_DIR := C:/Work/zephyrproject/modules/hal/bouffalolab
+menu "hal_bouffalolab (C:/Work/zephyrproject/modules/hal/bouffalolab)"
+osource "$(ZEPHYR_HAL_BOUFFALOLAB_KCONFIG)"
+config ZEPHYR_HAL_BOUFFALOLAB_MODULE
+	bool
+	default y
+endmenu
+ZEPHYR_HAL_ESPRESSIF_MODULE_DIR := C:/Work/zephyrproject/modules/hal/espressif
+menu "hal_espressif (C:/Work/zephyrproject/modules/hal/espressif)"
+osource "C:/Work/zephyrproject/modules/hal/espressif/zephyr/Kconfig"
+config ZEPHYR_HAL_ESPRESSIF_MODULE
+	bool
+	default y
+
+config ZEPHYR_HAL_ESPRESSIF_MODULE_BLOBS
+	bool
+endmenu
+ZEPHYR_HAL_ETHOS_U_MODULE_DIR := C:/Work/zephyrproject/modules/hal/ethos_u
+menu "hal_ethos_u (C:/Work/zephyrproject/modules/hal/ethos_u)"
+osource "$(ZEPHYR_HAL_ETHOS_U_KCONFIG)"
+config ZEPHYR_HAL_ETHOS_U_MODULE
+	bool
+	default y
+endmenu
+ZEPHYR_HAL_GIGADEVICE_MODULE_DIR := C:/Work/zephyrproject/modules/hal/gigadevice
+menu "hal_gigadevice (C:/Work/zephyrproject/modules/hal/gigadevice)"
+osource "$(ZEPHYR_HAL_GIGADEVICE_KCONFIG)"
+config ZEPHYR_HAL_GIGADEVICE_MODULE
+	bool
+	default y
+endmenu
+ZEPHYR_HAL_INFINEON_MODULE_DIR := C:/Work/zephyrproject/modules/hal/infineon
+menu "hal_infineon (C:/Work/zephyrproject/modules/hal/infineon)"
+osource "$(ZEPHYR_HAL_INFINEON_KCONFIG)"
+config ZEPHYR_HAL_INFINEON_MODULE
+	bool
+	default y
+
+config ZEPHYR_HAL_INFINEON_MODULE_BLOBS
+	bool
+endmenu
+ZEPHYR_HAL_INTEL_MODULE_DIR := C:/Work/zephyrproject/modules/hal/intel
+menu "hal_intel (C:/Work/zephyrproject/modules/hal/intel)"
+osource "C:/Work/zephyrproject/modules/hal/intel/zephyr/Kconfig"
+config ZEPHYR_HAL_INTEL_MODULE
+	bool
+	default y
+endmenu
+ZEPHYR_MICROCHIP_MODULE_DIR := C:/Work/zephyrproject/modules/hal/microchip
+config ZEPHYR_MICROCHIP_MODULE
+	bool
+	default y
+ZEPHYR_HAL_NORDIC_MODULE_DIR := C:/Work/zephyrproject/modules/hal/nordic
+menu "hal_nordic (C:/Work/zephyrproject/modules/hal/nordic)"
+osource "$(ZEPHYR_HAL_NORDIC_KCONFIG)"
+config ZEPHYR_HAL_NORDIC_MODULE
+	bool
+	default y
+
+config ZEPHYR_HAL_NORDIC_MODULE_BLOBS
+	bool
+endmenu
+ZEPHYR_NUVOTON_MODULE_DIR := C:/Work/zephyrproject/modules/hal/nuvoton
+config ZEPHYR_NUVOTON_MODULE
+	bool
+	default y
+ZEPHYR_HAL_NXP_MODULE_DIR := C:/Work/zephyrproject/modules/hal/nxp
+menu "hal_nxp (C:/Work/zephyrproject/modules/hal/nxp)"
+osource "$(ZEPHYR_HAL_NXP_KCONFIG)"
+config ZEPHYR_HAL_NXP_MODULE
+	bool
+	default y
+
+config ZEPHYR_HAL_NXP_MODULE_BLOBS
+	bool
+endmenu
+ZEPHYR_OPENISA_MODULE_DIR := C:/Work/zephyrproject/modules/hal/openisa
+config ZEPHYR_OPENISA_MODULE
+	bool
+	default y
+ZEPHYR_QUICKLOGIC_MODULE_DIR := C:/Work/zephyrproject/modules/hal/quicklogic
+config ZEPHYR_QUICKLOGIC_MODULE
+	bool
+	default y
+ZEPHYR_HAL_RENESAS_MODULE_DIR := C:/Work/zephyrproject/modules/hal/renesas
+config ZEPHYR_HAL_RENESAS_MODULE
+	bool
+	default y
+
+config ZEPHYR_HAL_RENESAS_MODULE_BLOBS
+	bool
+ZEPHYR_HAL_RPI_PICO_MODULE_DIR := C:/Work/zephyrproject/modules/hal/rpi_pico
+menu "hal_rpi_pico (C:/Work/zephyrproject/modules/hal/rpi_pico)"
+osource "$(ZEPHYR_HAL_RPI_PICO_KCONFIG)"
+config ZEPHYR_HAL_RPI_PICO_MODULE
+	bool
+	default y
+endmenu
+ZEPHYR_HAL_SILABS_MODULE_DIR := C:/Work/zephyrproject/modules/hal/silabs
+menu "hal_silabs (C:/Work/zephyrproject/modules/hal/silabs)"
+osource "$(ZEPHYR_HAL_SILABS_KCONFIG)"
+config ZEPHYR_HAL_SILABS_MODULE
+	bool
+	default y
+
+config ZEPHYR_HAL_SILABS_MODULE_BLOBS
+	bool
+endmenu
+ZEPHYR_HAL_ST_MODULE_DIR := C:/Work/zephyrproject/modules/hal/st
+menu "hal_st (C:/Work/zephyrproject/modules/hal/st)"
+osource "$(ZEPHYR_HAL_ST_KCONFIG)"
+config ZEPHYR_HAL_ST_MODULE
+	bool
+	default y
+endmenu
+ZEPHYR_HAL_STM32_MODULE_DIR := C:/Work/zephyrproject/modules/hal/stm32
+config ZEPHYR_HAL_STM32_MODULE
+	bool
+	default y
+
+config ZEPHYR_HAL_STM32_MODULE_BLOBS
+	bool
+ZEPHYR_HAL_TDK_MODULE_DIR := C:/Work/zephyrproject/modules/hal/tdk
+menu "hal_tdk (C:/Work/zephyrproject/modules/hal/tdk)"
+osource "$(ZEPHYR_HAL_TDK_KCONFIG)"
+config ZEPHYR_HAL_TDK_MODULE
+	bool
+	default y
+endmenu
+ZEPHYR_HAL_TELINK_MODULE_DIR := C:/Work/zephyrproject/modules/hal/telink
+menu "hal_telink (C:/Work/zephyrproject/modules/hal/telink)"
+osource "C:/Work/zephyrproject/modules/hal/telink/Kconfig"
+config ZEPHYR_HAL_TELINK_MODULE
+	bool
+	default y
+endmenu
+ZEPHYR_TI_MODULE_DIR := C:/Work/zephyrproject/modules/hal/ti
+config ZEPHYR_TI_MODULE
+	bool
+	default y
+ZEPHYR_HAL_WCH_MODULE_DIR := C:/Work/zephyrproject/modules/hal/wch
+menu "hal_wch (C:/Work/zephyrproject/modules/hal/wch)"
+osource "$(ZEPHYR_HAL_WCH_KCONFIG)"
+config ZEPHYR_HAL_WCH_MODULE
+	bool
+	default y
+endmenu
+ZEPHYR_HAL_WURTHELEKTRONIK_MODULE_DIR := C:/Work/zephyrproject/modules/hal/wurthelektronik
+config ZEPHYR_HAL_WURTHELEKTRONIK_MODULE
+	bool
+	default y
+ZEPHYR_XTENSA_MODULE_DIR := C:/Work/zephyrproject/modules/hal/xtensa
+config ZEPHYR_XTENSA_MODULE
+	bool
+	default y
+ZEPHYR_HOSTAP_MODULE_DIR := C:/Work/zephyrproject/modules/lib/hostap
+menu "hostap (C:/Work/zephyrproject/modules/lib/hostap)"
+osource "$(ZEPHYR_HOSTAP_KCONFIG)"
+config ZEPHYR_HOSTAP_MODULE
+	bool
+	default y
+endmenu
+ZEPHYR_LIBLC3_MODULE_DIR := C:/Work/zephyrproject/modules/lib/liblc3
+menu "liblc3 (C:/Work/zephyrproject/modules/lib/liblc3)"
+osource "$(ZEPHYR_LIBLC3_KCONFIG)"
+config ZEPHYR_LIBLC3_MODULE
+	bool
+	default y
+endmenu
+ZEPHYR_LIBMCTP_MODULE_DIR := C:/Work/zephyrproject/modules/lib/libmctp
+config ZEPHYR_LIBMCTP_MODULE
+	bool
+	default y
+ZEPHYR_LIBMETAL_MODULE_DIR := C:/Work/zephyrproject/modules/hal/libmetal
+config ZEPHYR_LIBMETAL_MODULE
+	bool
+	default y
+ZEPHYR_LIBSBC_MODULE_DIR := C:/Work/zephyrproject/modules/lib/libsbc
+menu "libsbc (C:/Work/zephyrproject/modules/lib/libsbc)"
+osource "$(ZEPHYR_LIBSBC_KCONFIG)"
+config ZEPHYR_LIBSBC_MODULE
+	bool
+	default y
+endmenu
+ZEPHYR_LITTLEFS_MODULE_DIR := C:/Work/zephyrproject/modules/fs/littlefs
+menu "littlefs (C:/Work/zephyrproject/modules/fs/littlefs)"
+osource "$(ZEPHYR_LITTLEFS_KCONFIG)"
+config ZEPHYR_LITTLEFS_MODULE
+	bool
+	default y
+endmenu
+ZEPHYR_LORAMAC_NODE_MODULE_DIR := C:/Work/zephyrproject/modules/lib/loramac-node
+menu "loramac-node (C:/Work/zephyrproject/modules/lib/loramac-node)"
+osource "$(ZEPHYR_LORAMAC_NODE_KCONFIG)"
+config ZEPHYR_LORAMAC_NODE_MODULE
+	bool
+	default y
+endmenu
+ZEPHYR_LVGL_MODULE_DIR := C:/Work/zephyrproject/modules/lib/gui/lvgl
+menu "lvgl (C:/Work/zephyrproject/modules/lib/gui/lvgl)"
+osource "C:/Work/zephyrproject/modules/lib/gui/lvgl/zephyr/Kconfig"
+config ZEPHYR_LVGL_MODULE
+	bool
+	default y
+endmenu
+ZEPHYR_MBEDTLS_MODULE_DIR := C:/Work/zephyrproject/modules/crypto/mbedtls
+menu "mbedtls (C:/Work/zephyrproject/modules/crypto/mbedtls)"
+osource "$(ZEPHYR_MBEDTLS_KCONFIG)"
+config ZEPHYR_MBEDTLS_MODULE
+	bool
+	default y
+endmenu
+ZEPHYR_MCUBOOT_MODULE_DIR := C:/Work/zephyrproject/bootloader/mcuboot
+config ZEPHYR_MCUBOOT_MODULE
+	bool
+	default y
+ZEPHYR_MIPI_SYS_T_MODULE_DIR := C:/Work/zephyrproject/modules/debug/mipi-sys-t
+config ZEPHYR_MIPI_SYS_T_MODULE
+	bool
+	default y
+ZEPHYR_NANOPB_MODULE_DIR := C:/Work/zephyrproject/modules/lib/nanopb
+menu "nanopb (C:/Work/zephyrproject/modules/lib/nanopb)"
+osource "$(ZEPHYR_NANOPB_KCONFIG)"
+config ZEPHYR_NANOPB_MODULE
+	bool
+	default y
+endmenu
+ZEPHYR_NRF_WIFI_MODULE_DIR := C:/Work/zephyrproject/modules/lib/nrf_wifi
+menu "nrf_wifi (C:/Work/zephyrproject/modules/lib/nrf_wifi)"
+osource "$(ZEPHYR_NRF_WIFI_KCONFIG)"
+config ZEPHYR_NRF_WIFI_MODULE
+	bool
+	default y
+
+config ZEPHYR_NRF_WIFI_MODULE_BLOBS
+	bool
+endmenu
+ZEPHYR_OPEN_AMP_MODULE_DIR := C:/Work/zephyrproject/modules/lib/open-amp
+config ZEPHYR_OPEN_AMP_MODULE
+	bool
+	default y
+ZEPHYR_OPENTHREAD_MODULE_DIR := C:/Work/zephyrproject/modules/lib/openthread
+menu "openthread (C:/Work/zephyrproject/modules/lib/openthread)"
+osource "$(ZEPHYR_OPENTHREAD_KCONFIG)"
+config ZEPHYR_OPENTHREAD_MODULE
+	bool
+	default y
+endmenu
+ZEPHYR_PERCEPIO_MODULE_DIR := C:/Work/zephyrproject/modules/debug/percepio
+menu "percepio (C:/Work/zephyrproject/modules/debug/percepio)"
+osource "C:/Work/zephyrproject/modules/debug/percepio/zephyr/Kconfig"
+config ZEPHYR_PERCEPIO_MODULE
+	bool
+	default y
+endmenu
+ZEPHYR_PICOLIBC_MODULE_DIR := C:/Work/zephyrproject/modules/lib/picolibc
+menu "picolibc (C:/Work/zephyrproject/modules/lib/picolibc)"
+osource "C:/Work/zephyrproject/modules/lib/picolibc/zephyr/Kconfig"
+config ZEPHYR_PICOLIBC_MODULE
+	bool
+	default y
+endmenu
+ZEPHYR_SEGGER_MODULE_DIR := C:/Work/zephyrproject/modules/debug/segger
+menu "segger (C:/Work/zephyrproject/modules/debug/segger)"
+osource "$(ZEPHYR_SEGGER_KCONFIG)"
+config ZEPHYR_SEGGER_MODULE
+	bool
+	default y
+endmenu
+ZEPHYR_TRUSTED_FIRMWARE_A_MODULE_DIR := C:/Work/zephyrproject/modules/tee/tf-a/trusted-firmware-a
+menu "trusted-firmware-a (C:/Work/zephyrproject/modules/tee/tf-a/trusted-firmware-a)"
+osource "$(ZEPHYR_TRUSTED_FIRMWARE_A_KCONFIG)"
+config ZEPHYR_TRUSTED_FIRMWARE_A_MODULE
+	bool
+	default y
+endmenu
+ZEPHYR_TRUSTED_FIRMWARE_M_MODULE_DIR := C:/Work/zephyrproject/modules/tee/tf-m/trusted-firmware-m
+menu "trusted-firmware-m (C:/Work/zephyrproject/modules/tee/tf-m/trusted-firmware-m)"
+osource "$(ZEPHYR_TRUSTED_FIRMWARE_M_KCONFIG)"
+config ZEPHYR_TRUSTED_FIRMWARE_M_MODULE
+	bool
+	default y
+endmenu
+ZEPHYR_UOSCORE_UEDHOC_MODULE_DIR := C:/Work/zephyrproject/modules/lib/uoscore-uedhoc
+menu "uoscore-uedhoc (C:/Work/zephyrproject/modules/lib/uoscore-uedhoc)"
+osource "$(ZEPHYR_UOSCORE_UEDHOC_KCONFIG)"
+config ZEPHYR_UOSCORE_UEDHOC_MODULE
+	bool
+	default y
+endmenu
+ZEPHYR_ZCBOR_MODULE_DIR := C:/Work/zephyrproject/modules/lib/zcbor
+menu "zcbor (C:/Work/zephyrproject/modules/lib/zcbor)"
+osource "$(ZEPHYR_ZCBOR_KCONFIG)"
+config ZEPHYR_ZCBOR_MODULE
+	bool
+	default y
+endmenu
+ZEPHYR_NRF_HW_MODELS_MODULE_DIR := C:/Work/zephyrproject/modules/bsim_hw_models/nrf_hw_models
+config ZEPHYR_NRF_HW_MODELS_MODULE
+	bool
+	default y

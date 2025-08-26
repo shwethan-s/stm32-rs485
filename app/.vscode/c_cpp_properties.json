@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "name": "Zephyr STM32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "C:/Work/zephyrproject/zephyr/include",
+                "C:/Work/zephyrproject/build/zephyr/include/generated",
+                "C:/Work/zephyrproject/zephyr/lib/libc/newlib/include",
+                "C:/ZephyrSDK/zephyr-sdk-0.17.4/arm-zephyr-eabi/include"
+            ],
+            "defines": [
+                "__ZEPHYR__"
+            ],
+            "compilerPath": "C:/ZephyrSDK/zephyr-sdk-0.17.4/arm-zephyr-eabi/bin/arm-zephyr-eabi-gcc.exe",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "windows-gcc-arm"
+        }
+    ],
+    "version": 4
+}

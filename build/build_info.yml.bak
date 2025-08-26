@@ -1,0 +1,5 @@
+west:
+  command: C:\Users\swayd\AppData\Roaming\Python\Python313\Scripts\west build -p always
+    -b stm32h747i_disco/stm32h747xx/m7 .
+  topdir: C:\Work\zephyrproject
+  version: 1.4.0

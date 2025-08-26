@@ -1,0 +1,12 @@
+/ {
+    chosen {
+        zephyr,display = &ltdc;
+    };
+};
+
+&ltdc {
+    status = "okay";
+
+    /* Required by binding */
+    pixel-format = "rgb565";     /* or "argb8888" depending on panel */
+};

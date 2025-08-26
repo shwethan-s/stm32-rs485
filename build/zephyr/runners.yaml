@@ -1,0 +1,37 @@
+# Available runners configured by board.cmake.
+runners:
+- stm32cubeprogrammer
+- openocd
+- jlink
+
+# Default flash runner if --runner is not given.
+flash-runner: stm32cubeprogrammer
+
+# Default debug runner if --runner is not given.
+debug-runner: openocd
+
+# Common runner configuration values.
+config:
+  board_dir: C:/Work/zephyrproject/zephyr/boards/st/stm32h747i_disco
+  # Build outputs:
+  elf_file: zephyr.elf
+  hex_file: zephyr.hex
+  bin_file: zephyr.bin
+  # Host tools:
+  gdb: C:/ZephyrSDK/zephyr-sdk-0.17.4/arm-zephyr-eabi/bin/arm-zephyr-eabi-gdb.exe
+
+# Runner specific arguments
+args:
+  stm32cubeprogrammer:
+    - --port=swd
+    - --reset-mode=hw
+  openocd:
+    - --cmd-load
+    - flash write_image erase
+    - --cmd-verify
+    - verify_image
+    - --config=C:/Work/zephyrproject/zephyr/boards/st/stm32h747i_disco/support/openocd_stm32h747i_disco_m7.cfg
+    - --target-handle=_CHIPNAME.cpu0
+  jlink:
+    - --dt-flash=y
+    - --device=STM32H747ZI_M7
