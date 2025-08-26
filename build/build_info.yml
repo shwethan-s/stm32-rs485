@@ -13,6 +13,9 @@ cmake:
      - 'C:/Work/zephyrproject/zephyr/dts/bindings'
     files:
      - 'C:/Work/zephyrproject/zephyr/boards/st/stm32h747i_disco/stm32h747i_disco_stm32h747xx_m7.dts'
+     - 'C:/Work/zephyrproject/zephyr/boards/shields/st_b_lcd40_dsi1_mb1166/st_b_lcd40_dsi1_mb1166_a09.overlay'
+     - 'C:/Work/zephyrproject/zephyr/boards/shields/st_b_lcd40_dsi1_mb1166/boards/stm32h747i_disco_stm32h747xx_m7.overlay'
+     - 'C:/Work/zephyrproject/zephyr/boards/shields/st_b_lcd40_dsi1_mb1166/boards/st_b_lcd40_dsi1_mb1166_a09/stm32h747i_disco_stm32h747xx_m7.overlay'
     include-dirs:
      - 'C:/Work/zephyrproject/modules/hal/ambiq/dts'
      - 'C:/Work/zephyrproject/modules/hal/atmel/include'
@@ -43,6 +46,8 @@ cmake:
     files:
      - 'C:/Work/zephyrproject/zephyr/boards/st/stm32h747i_disco/stm32h747i_disco_stm32h747xx_m7_defconfig'
      - 'C:/Work/zephyrproject/stm32-rs485/prj.conf'
+     - 'C:/Work/zephyrproject/zephyr/boards/shields/st_b_lcd40_dsi1_mb1166/boards/stm32h747i_disco_stm32h747xx_m7.conf'
+     - 'C:/Work/zephyrproject/zephyr/boards/shields/st_b_lcd40_dsi1_mb1166/boards/st_b_lcd40_dsi1_mb1166_a09/stm32h747i_disco_stm32h747xx_m7.conf'
     user-files:
      - 'C:/Work/zephyrproject/stm32-rs485/prj.conf'
   toolchain:
@@ -53,6 +58,6 @@ cmake:
     zephyr-base: 'C:/Work/zephyrproject/zephyr'
 version: '0.1.0'
 west:
-  command: 'C:\Users\swayd\AppData\Roaming\Python\Python313\Scripts\west build -p always -b stm32h747i_disco/stm32h747xx/m7 .'
+  command: 'C:\Users\swayd\AppData\Roaming\Python\Python313\Scripts\west build -p always -b stm32h747i_disco/stm32h747xx/m7 --shield st_b_lcd40_dsi1_mb1166_a09 -- -DCMAKE_EXPORT_COMPILE_COMMANDS=ON'
   topdir: 'C:\Work\zephyrproject'
   version: '1.4.0'

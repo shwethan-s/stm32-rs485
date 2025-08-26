@@ -48,7 +48,7 @@ BYPRODUCT_KERNEL_HEX_NAME:FILEPATH=C:/Work/zephyrproject/stm32-rs485/build/zephy
 CACHED_BOARD:STRING=stm32h747i_disco/stm32h747xx/m7
 
 //Selected shield
-CACHED_SHIELD:STRING=
+CACHED_SHIELD:STRING=st_b_lcd40_dsi1_mb1166_a09
 
 //Selected snippet
 CACHED_SNIPPET:STRING=
@@ -232,7 +232,7 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=controller_ui
+CMAKE_PROJECT_NAME:STATIC=stm32_rs485
 
 //Value Computed by CMake
 CMAKE_PROJECT_VERSION:STATIC=
@@ -369,6 +369,9 @@ Picolibc_IS_TOP_LEVEL:STATIC=OFF
 //Value Computed by CMake
 Picolibc_SOURCE_DIR:STATIC=C:/Work/zephyrproject/modules/lib/picolibc
 
+//Selected shield
+SHIELD:STRING=st_b_lcd40_dsi1_mb1166_a09
+
 //Path to the SoC directory.
 SOC_FULL_DIR:PATH=C:/Work/zephyrproject/zephyr/soc/st/stm32
 
@@ -412,13 +415,13 @@ ZephyrBuildConfiguration_DIR:PATH=ZephyrBuildConfiguration_DIR-NOTFOUND
 Zephyr_DIR:PATH=C:/Work/zephyrproject/zephyr/share/zephyr-package/cmake
 
 //Value Computed by CMake
-controller_ui_BINARY_DIR:STATIC=C:/Work/zephyrproject/stm32-rs485/build
+stm32_rs485_BINARY_DIR:STATIC=C:/Work/zephyrproject/stm32-rs485/build
 
 //Value Computed by CMake
-controller_ui_IS_TOP_LEVEL:STATIC=ON
+stm32_rs485_IS_TOP_LEVEL:STATIC=ON
 
 //Value Computed by CMake
-controller_ui_SOURCE_DIR:STATIC=C:/Work/zephyrproject/stm32-rs485
+stm32_rs485_SOURCE_DIR:STATIC=C:/Work/zephyrproject/stm32-rs485
 
 
 ########################
@@ -544,7 +547,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=154
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=160
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP

@@ -1,0 +1,18 @@
+{
+  "configurations": [
+    {
+      "name": "Zephyr",
+      "compileCommands": "C:/Work/zephyrproject/stm32-rs485/build/compile_commands.json",
+      "intelliSenseMode": "gcc-arm",
+      "cStandard": "c11",
+      "cppStandard": "c++17",
+      "includePath": [
+        "${workspaceFolder}/src",
+        "C:/Work/zephyrproject/zephyr/include",
+        "C:/Work/zephyrproject/zephyr/include/zephyr",
+        "C:/Work/zephyrproject/modules/lib/gui/lvgl"
+      ]
+    }
+  ],
+  "version": 4
+}

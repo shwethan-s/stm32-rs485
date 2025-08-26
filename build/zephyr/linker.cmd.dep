@@ -78,6 +78,8 @@ linker.cmd: \
  C:/Work/zephyrproject/zephyr/include/zephyr/linker/cplusplus-ram.ld \
  C:/Work/zephyrproject/stm32-rs485/build/zephyr/include/generated/snippets-data-sections.ld \
  C:/Work/zephyrproject/stm32-rs485/build/zephyr/include/generated/snippets-sections.ld \
+ c:\work\zephyrproject\zephyr\boards\st\stm32h747i_disco\dc_ram.ld \
+ c:\work\zephyrproject\zephyr\drivers\memc\memc_stm32_sdram.ld \
  c:\work\zephyrproject\zephyr\soc\st\stm32\stm32h7x\sections.ld \
  C:/Work/zephyrproject/zephyr/include/zephyr/linker/intlist.ld \
  C:/Work/zephyrproject/zephyr/include/zephyr/linker/debug-sections.ld \

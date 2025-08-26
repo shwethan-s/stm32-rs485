@@ -1,5 +1,5 @@
 west:
   command: C:\Users\swayd\AppData\Roaming\Python\Python313\Scripts\west build -p always
-    -b stm32h747i_disco/stm32h747xx/m7 .
+    -b stm32h747i_disco/stm32h747xx/m7 --shield st_b_lcd40_dsi1_mb1166_a09 -- -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
   topdir: C:\Work\zephyrproject
   version: 1.4.0

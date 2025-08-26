@@ -7288,4 +7288,126 @@ zephyr_mipi_dsi: &mipi_dsi {};
 
 zephyr_lcd_controller: &ltdc {};
 # 0 "<command-line>" 2
+# 1 "C:/Work/zephyrproject/zephyr/boards/shields/st_b_lcd40_dsi1_mb1166/st_b_lcd40_dsi1_mb1166_a09.overlay" 1
+# 9 "C:/Work/zephyrproject/zephyr/boards/shields/st_b_lcd40_dsi1_mb1166/st_b_lcd40_dsi1_mb1166_a09.overlay"
+/ {
+ lvgl_pointer {
+  compatible = "zephyr,lvgl-pointer-input";
+  input = <&ft5336>;
+  invert-y;
+ };
+
+ chosen {
+  zephyr,display = &zephyr_lcd_controller;
+ };
+};
+
+&zephyr_mipi_dsi {
+ status = "okay";
+ nt35510: nt35510@0 {
+  status = "okay";
+  compatible = "frida,nt35510";
+  reg = <0x0>;
+  height = <800>;
+  width = <480>;
+  reset-gpios = <&dsi_lcd_qsh_030 57 (0 << 0)>;
+  bl-gpios = <&dsi_lcd_qsh_030 53 (0 << 0)>;
+  data-lanes = <2>;
+  pixel-format = <0U>;
+  rotation = <90>;
+ };
+};
+
+&zephyr_lcd_controller {
+ status = "okay";
+ width = <800>;
+ height = <480>;
+ pixel-format = <(0x1 << 0)>;
+
+ display-timings {
+  compatible = "zephyr,panel-timing";
+  hsync-active = <0>;
+  vsync-active = <0>;
+  de-active = <0>;
+  pixelclk-active = <0>;
+  hsync-len = <2>;
+  vsync-len = <120>;
+  hback-porch = <34>;
+  vback-porch = <150>;
+  hfront-porch = <34>;
+  vfront-porch = <150>;
+ };
+};
+
+&qsh_030_i2c {
+ ft5336: ft5336@38 {
+  compatible = "focaltech,ft5336";
+  reg = <0x38>;
+  int-gpios = <&dsi_lcd_qsh_030 4 (1 << 0)>;
+  status = "okay";
+ };
+};
+# 0 "<command-line>" 2
+# 1 "C:/Work/zephyrproject/zephyr/boards/shields/st_b_lcd40_dsi1_mb1166/boards/stm32h747i_disco_stm32h747xx_m7.overlay" 1
+
+
+
+
+
+
+&sdram2 {
+
+ zephyr,memory-attr = <( (((1UL << (1))) << (20)) )>;
+};
+
+&zephyr_lcd_controller {
+ status = "okay";
+ ext-sdram = <&sdram2>;
+ def-back-color-red = <0>;
+ def-back-color-green = <0>;
+ def-back-color-blue = <0>;
+};
+
+
+&pll3 {
+ status = "okay";
+ clocks = <&clk_hse>;
+ div-m = <5>;
+ mul-n = <132>;
+ div-p = <2>;
+ div-q = <2>;
+ div-r = <24>;
+};
+
+&zephyr_mipi_dsi {
+ status = "okay";
+
+
+
+
+
+
+ pll-ndiv = <100>;
+ pll-idf = <5>;
+ pll-odf = <0>;
+
+ vs-active-high;
+ hs-active-high;
+ de-active-high;
+};
+# 0 "<command-line>" 2
+# 1 "C:/Work/zephyrproject/zephyr/boards/shields/st_b_lcd40_dsi1_mb1166/boards/st_b_lcd40_dsi1_mb1166_a09/stm32h747i_disco_stm32h747xx_m7.overlay" 1
+
+
+
+
+
+
+&zephyr_mipi_dsi {
+ status = "okay";
+ loosely-packed;
+ largest-packet-size = <64>;
+ bta-ack-disable;
+};
+# 0 "<command-line>" 2
 # 1 "C:/Work/zephyrproject/zephyr/misc/empty_file.c"
