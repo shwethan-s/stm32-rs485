@@ -152,6 +152,16 @@ C:/Work/zephyrproject/stm32-rs485/build/zephyr/subsys/usb/CMakeFiles/rebuild_cac
 C:/Work/zephyrproject/stm32-rs485/build/zephyr/subsys/input/CMakeFiles/subsys__input.dir
 C:/Work/zephyrproject/stm32-rs485/build/zephyr/subsys/input/CMakeFiles/edit_cache.dir
 C:/Work/zephyrproject/stm32-rs485/build/zephyr/subsys/input/CMakeFiles/rebuild_cache.dir
+C:/Work/zephyrproject/stm32-rs485/build/zephyr/subsys/shell/CMakeFiles/edit_cache.dir
+C:/Work/zephyrproject/stm32-rs485/build/zephyr/subsys/shell/CMakeFiles/rebuild_cache.dir
+C:/Work/zephyrproject/stm32-rs485/build/zephyr/subsys/shell/modules/CMakeFiles/edit_cache.dir
+C:/Work/zephyrproject/stm32-rs485/build/zephyr/subsys/shell/modules/CMakeFiles/rebuild_cache.dir
+C:/Work/zephyrproject/stm32-rs485/build/zephyr/subsys/shell/modules/kernel_service/CMakeFiles/edit_cache.dir
+C:/Work/zephyrproject/stm32-rs485/build/zephyr/subsys/shell/modules/kernel_service/CMakeFiles/rebuild_cache.dir
+C:/Work/zephyrproject/stm32-rs485/build/zephyr/subsys/shell/modules/kernel_service/thread/CMakeFiles/edit_cache.dir
+C:/Work/zephyrproject/stm32-rs485/build/zephyr/subsys/shell/modules/kernel_service/thread/CMakeFiles/rebuild_cache.dir
+C:/Work/zephyrproject/stm32-rs485/build/zephyr/subsys/shell/backends/CMakeFiles/edit_cache.dir
+C:/Work/zephyrproject/stm32-rs485/build/zephyr/subsys/shell/backends/CMakeFiles/rebuild_cache.dir
 C:/Work/zephyrproject/stm32-rs485/build/zephyr/drivers/CMakeFiles/edit_cache.dir
 C:/Work/zephyrproject/stm32-rs485/build/zephyr/drivers/CMakeFiles/rebuild_cache.dir
 C:/Work/zephyrproject/stm32-rs485/build/zephyr/drivers/disk/CMakeFiles/edit_cache.dir
