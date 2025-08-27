@@ -7052,3 +7052,171 @@ events:
         - "c:\\Users\\swayd\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\debugCommand"
       CMAKE_INSTALL_PREFIX: "C:/Program Files (x86)/Zephyr-Kernel"
 ...
+
+---
+events:
+  -
+    kind: "find-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-4.1/Modules/FindPython/Support.cmake:2430 (find_program)"
+      - "C:/Program Files/CMake/share/cmake-4.1/Modules/FindPython3.cmake:656 (include)"
+      - "C:/Work/zephyrproject/zephyr/cmake/modules/python.cmake:41 (find_package)"
+      - "C:/Work/zephyrproject/zephyr/cmake/modules/zephyr_default.cmake:131 (include)"
+      - "C:/Work/zephyrproject/zephyr/share/zephyr-package/cmake/ZephyrConfig.cmake:66 (include)"
+      - "C:/Work/zephyrproject/zephyr/share/zephyr-package/cmake/ZephyrConfig.cmake:97 (include_boilerplate)"
+      - "CMakeLists.txt:4 (find_package)"
+    mode: "program"
+    variable: "_Python3_EXECUTABLE_DEBUG"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "python3.14_d"
+      - "python3.13_d"
+      - "python3.12_d"
+      - "python3.11_d"
+      - "python3.10_d"
+      - "python3_d"
+      - "python_d"
+    candidate_directories:
+      - "C:/Users/swayd/AppData/Local/Programs/Python/Python313/"
+    searched_directories:
+      - "C:/Users/swayd/AppData/Local/Programs/Python/Python313/python3.14_d.com"
+      - "C:/Users/swayd/AppData/Local/Programs/Python/Python313/python3.14_d.exe"
+      - "C:/Users/swayd/AppData/Local/Programs/Python/Python313/python3.14_d"
+      - "C:/Users/swayd/AppData/Local/Programs/Python/Python313/python3.13_d.com"
+      - "C:/Users/swayd/AppData/Local/Programs/Python/Python313/python3.13_d.exe"
+      - "C:/Users/swayd/AppData/Local/Programs/Python/Python313/python3.13_d"
+      - "C:/Users/swayd/AppData/Local/Programs/Python/Python313/python3.12_d.com"
+      - "C:/Users/swayd/AppData/Local/Programs/Python/Python313/python3.12_d.exe"
+      - "C:/Users/swayd/AppData/Local/Programs/Python/Python313/python3.12_d"
+      - "C:/Users/swayd/AppData/Local/Programs/Python/Python313/python3.11_d.com"
+      - "C:/Users/swayd/AppData/Local/Programs/Python/Python313/python3.11_d.exe"
+      - "C:/Users/swayd/AppData/Local/Programs/Python/Python313/python3.11_d"
+      - "C:/Users/swayd/AppData/Local/Programs/Python/Python313/python3.10_d.com"
+      - "C:/Users/swayd/AppData/Local/Programs/Python/Python313/python3.10_d.exe"
+      - "C:/Users/swayd/AppData/Local/Programs/Python/Python313/python3.10_d"
+      - "C:/Users/swayd/AppData/Local/Programs/Python/Python313/python3_d.com"
+      - "C:/Users/swayd/AppData/Local/Programs/Python/Python313/python3_d.exe"
+      - "C:/Users/swayd/AppData/Local/Programs/Python/Python313/python3_d"
+      - "C:/Users/swayd/AppData/Local/Programs/Python/Python313/python_d.com"
+      - "C:/Users/swayd/AppData/Local/Programs/Python/Python313/python_d.exe"
+      - "C:/Users/swayd/AppData/Local/Programs/Python/Python313/python_d"
+    found: false
+    search_context:
+      ENV{PATH}:
+        - "C:\\windows\\system32"
+        - "C:\\windows"
+        - "C:\\windows\\System32\\Wbem"
+        - "C:\\windows\\System32\\WindowsPowerShell\\v1.0\\"
+        - "C:\\windows\\System32\\OpenSSH\\"
+        - "C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common"
+        - "C:\\Users\\Administrator\\AppData\\Local\\Microsoft\\WindowsApps"
+        - "C:\\Windows"
+        - "C:\\Windows\\System32"
+        - "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\"
+        - "C:\\Program Files\\HP\\OMEN-Broadcast\\Common"
+        - "C:\\Program Files\\dotnet\\"
+        - "C:\\Program Files\\Common Files\\Quanser\\hardware\\"
+        - "C:\\Program Files (x86)\\Common Files\\Quanser\\hardware\\"
+        - "C:\\Program Files\\Quanser\\QUARC\\"
+        - "C:\\WINDOWS\\system32"
+        - "C:\\WINDOWS"
+        - "C:\\WINDOWS\\System32\\Wbem"
+        - "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\"
+        - "C:\\WINDOWS\\System32\\OpenSSH\\"
+        - "C:\\Program Files\\NVIDIA Corporation\\NVIDIA app\\NvDLISR"
+        - "C:\\Program Files\\Git\\cmd"
+        - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Users\\swayd\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\"
+        - "C:\\Users\\swayd\\AppData\\Local\\Programs\\Python\\Python313\\"
+        - "C:\\Program Files\\7-Zip"
+        - "C:\\Users\\swayd\\AppData\\Local\\Programs\\Python\\Launcher\\"
+        - "C:\\Users\\swayd\\AppData\\Local\\Microsoft\\WindowsApps"
+        - "C:\\Users\\swayd\\AppData\\Local\\Programs\\Microsoft VS Code\\bin"
+        - "C:\\intelFPGA_lite\\22.1std\\questa_fse\\win64"
+        - "C:\\Users\\swayd\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Ninja-build.Ninja_Microsoft.Winget.Source_8wekyb3d8bbwe"
+        - "C:\\Users\\swayd\\AppData\\Local\\Microsoft\\WinGet\\Packages\\oss-winget.gperf_Microsoft.Winget.Source_8wekyb3d8bbwe"
+        - "C:\\Users\\swayd\\AppData\\Local\\Microsoft\\WinGet\\Packages\\oss-winget.dtc_Microsoft.Winget.Source_8wekyb3d8bbwe\\usr\\bin"
+        - "C:\\Users\\swayd\\AppData\\Local\\Microsoft\\WinGet\\Packages\\JernejSimoncic.Wget_Microsoft.Winget.Source_8wekyb3d8bbwe"
+        - "C:\\Users\\swayd\\AppData\\Roaming\\Python\\Python313\\Scripts"
+        - "c:\\Users\\swayd\\.vscode\\extensions\\ms-python.debugpy-2025.10.0-win32-x64\\bundled\\scripts\\noConfigScripts"
+        - "c:\\Users\\swayd\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\debugCommand"
+      CMAKE_INSTALL_PREFIX: "C:/Program Files (x86)/Zephyr-Kernel"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "C:/Work/zephyrproject/zephyr/cmake/compiler/gcc/target.cmake:8 (find_program)"
+      - "C:/Work/zephyrproject/zephyr/cmake/modules/FindTargetTools.cmake:103 (include)"
+      - "C:/Work/zephyrproject/zephyr/cmake/modules/kernel.cmake:25 (find_package)"
+      - "C:/Work/zephyrproject/zephyr/cmake/modules/zephyr_default.cmake:140 (include)"
+      - "C:/Work/zephyrproject/zephyr/share/zephyr-package/cmake/ZephyrConfig.cmake:66 (include)"
+      - "C:/Work/zephyrproject/zephyr/share/zephyr-package/cmake/ZephyrConfig.cmake:97 (include_boilerplate)"
+      - "CMakeLists.txt:4 (find_package)"
+    mode: "program"
+    variable: "CMAKE_C_COMPILER"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "C:/ZephyrSDK/zephyr-sdk-0.17.4/arm-zephyr-eabi/bin/arm-zephyr-eabi-gcc"
+    candidate_directories:
+      - "C:/ZephyrSDK/zephyr-sdk-0.17.4/"
+    searched_directories:
+      - "C:/ZephyrSDK/zephyr-sdk-0.17.4/arm-zephyr-eabi/bin/arm-zephyr-eabi-gcc.com"
+    found: "C:/ZephyrSDK/zephyr-sdk-0.17.4/arm-zephyr-eabi/bin/arm-zephyr-eabi-gcc.exe"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "C:/ZephyrSDK/zephyr-sdk-0.17.4/sysroots/AMD64-pokysdk-linux/usr"
+      ENV{PATH}:
+        - "C:\\windows\\system32"
+        - "C:\\windows"
+        - "C:\\windows\\System32\\Wbem"
+        - "C:\\windows\\System32\\WindowsPowerShell\\v1.0\\"
+        - "C:\\windows\\System32\\OpenSSH\\"
+        - "C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common"
+        - "C:\\Users\\Administrator\\AppData\\Local\\Microsoft\\WindowsApps"
+        - "C:\\Windows"
+        - "C:\\Windows\\System32"
+        - "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\"
+        - "C:\\Program Files\\HP\\OMEN-Broadcast\\Common"
+        - "C:\\Program Files\\dotnet\\"
+        - "C:\\Program Files\\Common Files\\Quanser\\hardware\\"
+        - "C:\\Program Files (x86)\\Common Files\\Quanser\\hardware\\"
+        - "C:\\Program Files\\Quanser\\QUARC\\"
+        - "C:\\WINDOWS\\system32"
+        - "C:\\WINDOWS"
+        - "C:\\WINDOWS\\System32\\Wbem"
+        - "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\"
+        - "C:\\WINDOWS\\System32\\OpenSSH\\"
+        - "C:\\Program Files\\NVIDIA Corporation\\NVIDIA app\\NvDLISR"
+        - "C:\\Program Files\\Git\\cmd"
+        - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Users\\swayd\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\"
+        - "C:\\Users\\swayd\\AppData\\Local\\Programs\\Python\\Python313\\"
+        - "C:\\Program Files\\7-Zip"
+        - "C:\\Users\\swayd\\AppData\\Local\\Programs\\Python\\Launcher\\"
+        - "C:\\Users\\swayd\\AppData\\Local\\Microsoft\\WindowsApps"
+        - "C:\\Users\\swayd\\AppData\\Local\\Programs\\Microsoft VS Code\\bin"
+        - "C:\\intelFPGA_lite\\22.1std\\questa_fse\\win64"
+        - "C:\\Users\\swayd\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Ninja-build.Ninja_Microsoft.Winget.Source_8wekyb3d8bbwe"
+        - "C:\\Users\\swayd\\AppData\\Local\\Microsoft\\WinGet\\Packages\\oss-winget.gperf_Microsoft.Winget.Source_8wekyb3d8bbwe"
+        - "C:\\Users\\swayd\\AppData\\Local\\Microsoft\\WinGet\\Packages\\oss-winget.dtc_Microsoft.Winget.Source_8wekyb3d8bbwe\\usr\\bin"
+        - "C:\\Users\\swayd\\AppData\\Local\\Microsoft\\WinGet\\Packages\\JernejSimoncic.Wget_Microsoft.Winget.Source_8wekyb3d8bbwe"
+        - "C:\\Users\\swayd\\AppData\\Roaming\\Python\\Python313\\Scripts"
+        - "c:\\Users\\swayd\\.vscode\\extensions\\ms-python.debugpy-2025.10.0-win32-x64\\bundled\\scripts\\noConfigScripts"
+        - "c:\\Users\\swayd\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\debugCommand"
+      CMAKE_INSTALL_PREFIX: "C:/Program Files (x86)/Zephyr-Kernel"
+...

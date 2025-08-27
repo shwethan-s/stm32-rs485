@@ -1,11 +1,37 @@
 / {
     chosen {
-        zephyr,display = &ltdc;
+        zephyr,display = &ltdc;   /* keep your screen active */
     };
+
+    /* RS-485 direction-control GPIOs (DE and ~RE) */
+    /* Use the MCU pins that your fanout exposes as:
+     *  - CN10-11 "INT"  -> DE (example: Port G pin 9 here)
+     *  - CN10-14 "PWM"  -> ~RE (you told me this is PF8 on your kit)
+     * If your INT maps to a different port/pin, adjust the &gpiog 9.
+     */
+    rs485_de: rs485_de { gpios = <&gpiog 9 GPIO_ACTIVE_HIGH>; };
+    rs485_re: rs485_re { gpios = <&gpiof 8 GPIO_ACTIVE_HIGH>; };
 };
 
+/* Keep LCD settings */
 &ltdc {
     status = "okay";
+    pixel-format = "rgb565";
+};
 
-    pixel-format = "rgb565";  /* or "argb8888" depending on your panel */
+/* Enable the UART that goes to CN10-4 (TX) / CN10-3 (RX)
+ * Start with usart3; if your board wires STMOD TX/RX to a different UART,
+ * change this block to &usart2 or &lpuart1 accordingly.
+ */
+&usart3 {
+    status = "okay";
+    current-speed = <19200>;      /* baud — we’ll also set 8-O-1 in code */
+    pinctrl-names = "default";
+
+    /* If your board’s default already muxes the right pins for STMod+,
+     * you can leave pinctrl-0 out. Otherwise, set the exact TX/RX pins, e.g.:
+     * pinctrl-0 = <&usart3_tx_pb10 &usart3_rx_pb11>;
+     *
+     * (We’ll verify which instance works in the next step.)
+     */
 };
