@@ -7410,4 +7410,36 @@ zephyr_lcd_controller: &ltdc {};
  bta-ack-disable;
 };
 # 0 "<command-line>" 2
+# 1 "C:/Work/zephyrproject/stm32-rs485/boards/stm32h747i_disco_stm32h747xx_m7.overlay" 1
+/ {
+    chosen {
+        zephyr,console = &usart1;
+    };
+};
+
+
+&gpioj { status = "okay"; };
+
+
+&pinctrl {
+    uart8_tx_pj8: uart8_tx_pj8 {
+        pinmux = <((((('J') - 'A') & 0x1FU) << 9U) | (((8) & 0xFU) << 5U) | (((0x8) & 0x1FU) << 0U))>;
+    };
+    uart8_rx_pj9: uart8_rx_pj9 {
+        pinmux = <((((('J') - 'A') & 0x1FU) << 9U) | (((9) & 0xFU) << 5U) | (((0x8) & 0x1FU) << 0U))>;
+    };
+};
+
+&uart8 {
+    status = "okay";
+    current-speed = <19200>;
+    pinctrl-0 = <&uart8_tx_pj8 &uart8_rx_pj9>;
+    pinctrl-names = "default";
+};
+
+
+&ltdc {
+    status = "okay";
+};
+# 0 "<command-line>" 2
 # 1 "C:/Work/zephyrproject/zephyr/misc/empty_file.c"

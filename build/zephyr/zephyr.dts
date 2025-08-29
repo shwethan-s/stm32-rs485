@@ -10,12 +10,12 @@
 	/* node '/chosen' defined in zephyr\dts\common\skeleton.dtsi:12 */
 	chosen {
 		zephyr,entropy = &rng;                   /* in zephyr\dts\arm\st\h7\stm32h7.dtsi:28 */
-		zephyr,console = &usart1;                /* in zephyr\boards\st\stm32h747i_disco\stm32h747i_disco_stm32h747xx_m7.dts:19 */
 		zephyr,shell-uart = &usart1;             /* in zephyr\boards\st\stm32h747i_disco\stm32h747i_disco_stm32h747xx_m7.dts:20 */
 		zephyr,sram = &sram0;                    /* in zephyr\boards\st\stm32h747i_disco\stm32h747i_disco_stm32h747xx_m7.dts:21 */
 		zephyr,flash = &flash0;                  /* in zephyr\boards\st\stm32h747i_disco\stm32h747i_disco_stm32h747xx_m7.dts:22 */
 		zephyr,flash-controller = &mt25ql512ab1; /* in zephyr\boards\st\stm32h747i_disco\stm32h747i_disco_stm32h747xx_m7.dts:23 */
 		zephyr,display = &zephyr_lcd_controller; /* in zephyr\boards\shields\st_b_lcd40_dsi1_mb1166\st_b_lcd40_dsi1_mb1166_a09.overlay:17 */
+		zephyr,console = &usart1;                /* in stm32-rs485\boards\stm32h747i_disco_stm32h747xx_m7.overlay:3 */
 	};
 
 	/* node '/aliases' defined in zephyr\dts\common\skeleton.dtsi:13 */
@@ -244,6 +244,7 @@
 				#gpio-cells = < 0x2 >;        /* in zephyr\dts\arm\st\h7\stm32h7.dtsi:262 */
 				reg = < 0x58022400 0x400 >;   /* in zephyr\dts\arm\st\h7\stm32h7.dtsi:263 */
 				clocks = < &rcc 0xe0 0x200 >; /* in zephyr\dts\arm\st\h7\stm32h7.dtsi:264 */
+				status = "okay";              /* in stm32-rs485\boards\stm32h747i_disco_stm32h747xx_m7.overlay:8 */
 				phandle = < 0x82 >;           /* in zephyr\boards\st\stm32h747i_disco\arduino_r3_connector.dtsi:13 */
 			};
 
@@ -979,8 +980,8 @@
 
 			/* node '/soc/pin-controller@58020000/uart8_rx_pj9' defined in modules\hal\stm32\dts\st\h7\stm32h747xihx-pinctrl.dtsi:5017 */
 			uart8_rx_pj9: uart8_rx_pj9 {
-				pinmux = < 0x1328 >; /* in modules\hal\stm32\dts\st\h7\stm32h747xihx-pinctrl.dtsi:5018 */
-				phandle = < 0x8 >;   /* in zephyr\boards\st\stm32h747i_disco\stm32h747i_disco.dtsi:121 */
+				pinmux = < 0x1328 >; /* in stm32-rs485\boards\stm32h747i_disco_stm32h747xx_m7.overlay:16 */
+				phandle = < 0x8 >;   /* in stm32-rs485\boards\stm32h747i_disco_stm32h747xx_m7.overlay:23 */
 			};
 
 			/* node '/soc/pin-controller@58020000/usart1_tx_pa9' defined in modules\hal\stm32\dts\st\h7\stm32h747xihx-pinctrl.dtsi:5028 */
@@ -992,9 +993,9 @@
 
 			/* node '/soc/pin-controller@58020000/uart8_tx_pj8' defined in modules\hal\stm32\dts\st\h7\stm32h747xihx-pinctrl.dtsi:5158 */
 			uart8_tx_pj8: uart8_tx_pj8 {
-				pinmux = < 0x1308 >; /* in modules\hal\stm32\dts\st\h7\stm32h747xihx-pinctrl.dtsi:5159 */
 				bias-pull-up;        /* in modules\hal\stm32\dts\st\h7\stm32h747xihx-pinctrl.dtsi:5160 */
-				phandle = < 0x7 >;   /* in zephyr\boards\st\stm32h747i_disco\stm32h747i_disco.dtsi:121 */
+				pinmux = < 0x1308 >; /* in stm32-rs485\boards\stm32h747i_disco_stm32h747xx_m7.overlay:13 */
+				phandle = < 0x7 >;   /* in stm32-rs485\boards\stm32h747i_disco_stm32h747xx_m7.overlay:23 */
 			};
 
 			/* node '/soc/pin-controller@58020000/usb_otg_hs_ulpi_d0_pa3' defined in modules\hal\stm32\dts\st\h7\stm32h747xihx-pinctrl.dtsi:5209 */
@@ -1182,10 +1183,10 @@
 			clocks = < &rcc 0xe8 0x80000000 >;           /* in zephyr\dts\arm\st\h7\stm32h7.dtsi:349 */
 			resets = < &rctl 0x121f >;                   /* in zephyr\dts\arm\st\h7\stm32h7.dtsi:350 */
 			interrupts = < 0x53 0x0 >;                   /* in zephyr\dts\arm\st\h7\stm32h7.dtsi:351 */
-			status = "disabled";                         /* in zephyr\dts\arm\st\h7\stm32h7.dtsi:352 */
-			pinctrl-0 = < &uart8_tx_pj8 &uart8_rx_pj9 >; /* in zephyr\boards\st\stm32h747i_disco\stm32h747i_disco.dtsi:121 */
-			pinctrl-names = "default";                   /* in zephyr\boards\st\stm32h747i_disco\stm32h747i_disco.dtsi:122 */
-			current-speed = < 0x1c200 >;                 /* in zephyr\boards\st\stm32h747i_disco\stm32h747i_disco.dtsi:123 */
+			status = "okay";                             /* in stm32-rs485\boards\stm32h747i_disco_stm32h747xx_m7.overlay:21 */
+			current-speed = < 0x4b00 >;                  /* in stm32-rs485\boards\stm32h747i_disco_stm32h747xx_m7.overlay:22 */
+			pinctrl-0 = < &uart8_tx_pj8 &uart8_rx_pj9 >; /* in stm32-rs485\boards\stm32h747i_disco_stm32h747xx_m7.overlay:23 */
+			pinctrl-names = "default";                   /* in stm32-rs485\boards\stm32h747i_disco_stm32h747xx_m7.overlay:24 */
 		};
 
 		/* node '/soc/serial@58000c00' defined in zephyr\dts\arm\st\h7\stm32h7.dtsi:355 */
@@ -2210,11 +2211,11 @@
 			width = < 0x320 >;              /* in zephyr\boards\shields\st_b_lcd40_dsi1_mb1166\st_b_lcd40_dsi1_mb1166_a09.overlay:39 */
 			height = < 0x1e0 >;             /* in zephyr\boards\shields\st_b_lcd40_dsi1_mb1166\st_b_lcd40_dsi1_mb1166_a09.overlay:40 */
 			pixel-format = < 0x1 >;         /* in zephyr\boards\shields\st_b_lcd40_dsi1_mb1166\st_b_lcd40_dsi1_mb1166_a09.overlay:41 */
-			status = "okay";                /* in zephyr\boards\shields\st_b_lcd40_dsi1_mb1166\boards\stm32h747i_disco_stm32h747xx_m7.overlay:13 */
 			ext-sdram = < &sdram2 >;        /* in zephyr\boards\shields\st_b_lcd40_dsi1_mb1166\boards\stm32h747i_disco_stm32h747xx_m7.overlay:14 */
 			def-back-color-red = < 0x0 >;   /* in zephyr\boards\shields\st_b_lcd40_dsi1_mb1166\boards\stm32h747i_disco_stm32h747xx_m7.overlay:15 */
 			def-back-color-green = < 0x0 >; /* in zephyr\boards\shields\st_b_lcd40_dsi1_mb1166\boards\stm32h747i_disco_stm32h747xx_m7.overlay:16 */
 			def-back-color-blue = < 0x0 >;  /* in zephyr\boards\shields\st_b_lcd40_dsi1_mb1166\boards\stm32h747i_disco_stm32h747xx_m7.overlay:17 */
+			status = "okay";                /* in stm32-rs485\boards\stm32h747i_disco_stm32h747xx_m7.overlay:29 */
 
 			/* node '/soc/display-controller@50001000/display-timings' defined in zephyr\boards\shields\st_b_lcd40_dsi1_mb1166\st_b_lcd40_dsi1_mb1166_a09.overlay:43 */
 			display-timings {

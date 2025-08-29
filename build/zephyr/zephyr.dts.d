@@ -44,4 +44,5 @@ empty_file.o: C:/Work/zephyrproject/zephyr/misc/empty_file.c \
  C:/Work/zephyrproject/zephyr/include/zephyr/dt-bindings/input/input-event-codes.h \
  C:/Work/zephyrproject/zephyr/boards/shields/st_b_lcd40_dsi1_mb1166/st_b_lcd40_dsi1_mb1166_a09.overlay \
  C:/Work/zephyrproject/zephyr/boards/shields/st_b_lcd40_dsi1_mb1166/boards/stm32h747i_disco_stm32h747xx_m7.overlay \
- C:/Work/zephyrproject/zephyr/boards/shields/st_b_lcd40_dsi1_mb1166/boards/st_b_lcd40_dsi1_mb1166_a09/stm32h747i_disco_stm32h747xx_m7.overlay
+ C:/Work/zephyrproject/zephyr/boards/shields/st_b_lcd40_dsi1_mb1166/boards/st_b_lcd40_dsi1_mb1166_a09/stm32h747i_disco_stm32h747xx_m7.overlay \
+ C:/Work/zephyrproject/stm32-rs485/boards/stm32h747i_disco_stm32h747xx_m7.overlay

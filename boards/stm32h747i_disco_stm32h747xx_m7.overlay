@@ -1,0 +1,30 @@
+/ {
+    chosen {
+        zephyr,console = &usart1;   // keep console on ST-LINK VCP
+    };
+};
+
+/* Enable the GPIO port for PJ8/PJ9 */
+&gpioj { status = "okay"; };
+
+/* Pin mux for UART8 on PJ8/PJ9 */
+&pinctrl {
+    uart8_tx_pj8: uart8_tx_pj8 {
+        pinmux = <STM32_PINMUX('J', 8, AF8)>;   /* PJ8 = UART8_TX */
+    };
+    uart8_rx_pj9: uart8_rx_pj9 {
+        pinmux = <STM32_PINMUX('J', 9, AF8)>;   /* PJ9 = UART8_RX */
+    };
+};
+
+&uart8 {
+    status = "okay";
+    current-speed = <19200>;
+    pinctrl-0 = <&uart8_tx_pj8 &uart8_rx_pj9>;
+    pinctrl-names = "default";
+};
+
+
+&ltdc {
+    status = "okay";
+};
