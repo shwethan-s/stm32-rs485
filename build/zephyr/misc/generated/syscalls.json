@@ -145,6 +145,30 @@
     ],
     [
         [
+            "int adc_channel_setup",
+            "const struct device *dev,\n\t\t\t\tconst struct adc_channel_cfg *channel_cfg"
+        ],
+        "adc.h",
+        true
+    ],
+    [
+        [
+            "int adc_read",
+            "const struct device *dev,\n\t\t       const struct adc_sequence *sequence"
+        ],
+        "adc.h",
+        true
+    ],
+    [
+        [
+            "int adc_read_async",
+            "const struct device *dev,\n\t\t\t     const struct adc_sequence *sequence,\n\t\t\t     struct k_poll_signal *async"
+        ],
+        "adc.h",
+        true
+    ],
+    [
+        [
             "int sys_cache_data_flush_range",
             "void *addr, size_t size"
         ],
@@ -1381,30 +1405,6 @@
             "unsigned int reason"
         ],
         "arch.h",
-        false
-    ],
-    [
-        [
-            "int adc_channel_setup",
-            "const struct device *dev,\n\t\t\t\tconst struct adc_channel_cfg *channel_cfg"
-        ],
-        "adc.h",
-        false
-    ],
-    [
-        [
-            "int adc_read",
-            "const struct device *dev,\n\t\t       const struct adc_sequence *sequence"
-        ],
-        "adc.h",
-        false
-    ],
-    [
-        [
-            "int adc_read_async",
-            "const struct device *dev,\n\t\t\t     const struct adc_sequence *sequence,\n\t\t\t     struct k_poll_signal *async"
-        ],
-        "adc.h",
         false
     ],
     [

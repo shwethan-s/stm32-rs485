@@ -7441,5 +7441,23 @@ zephyr_lcd_controller: &ltdc {};
 &ltdc {
     status = "okay";
 };
+
+&adc1 {
+    st,adc-clock-source = "SYNC";
+    st,adc-prescaler = <4>;
+    status = "okay";
+};
+
+&adc2 {
+    st,adc-clock-source = "SYNC";
+    st,adc-prescaler = <4>;
+    status = "okay";
+};
+
+&adc3 {
+    st,adc-clock-source = "SYNC";
+    st,adc-prescaler = <4>;
+    status = "okay";
+};
 # 0 "<command-line>" 2
 # 1 "C:/Work/zephyrproject/zephyr/misc/empty_file.c"

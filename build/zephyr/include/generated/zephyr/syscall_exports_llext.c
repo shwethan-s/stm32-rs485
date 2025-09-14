@@ -7,6 +7,9 @@
  */
 
 /* Symbol declarations */
+extern void * const z_impl_adc_channel_setup;
+extern void * const z_impl_adc_read;
+extern void * const z_impl_adc_read_async;
 extern void * const z_impl_device_deinit;
 extern void * const z_impl_device_get_binding;
 extern void * const z_impl_device_get_by_dt_nodelabel;
@@ -180,6 +183,9 @@ extern void * const z_impl_zephyr_read_stdin;
 extern void * const z_impl_zephyr_write_stdout;
 
 /* Exported symbols */
+EXPORT_SYMBOL(z_impl_adc_channel_setup);
+EXPORT_SYMBOL(z_impl_adc_read);
+EXPORT_SYMBOL(z_impl_adc_read_async);
 EXPORT_SYMBOL(z_impl_device_deinit);
 EXPORT_SYMBOL(z_impl_device_get_binding);
 EXPORT_SYMBOL(z_impl_device_get_by_dt_nodelabel);

@@ -1829,12 +1829,14 @@
 			reg = < 0x40022000 0x400 >;                                     /* in zephyr\dts\arm\st\h7\stm32h7.dtsi:870 */
 			clocks = < &rcc 0xd8 0x20 >;                                    /* in zephyr\dts\arm\st\h7\stm32h7.dtsi:871 */
 			interrupts = < 0x12 0x0 >;                                      /* in zephyr\dts\arm\st\h7\stm32h7.dtsi:872 */
-			status = "disabled";                                            /* in zephyr\dts\arm\st\h7\stm32h7.dtsi:873 */
 			#io-channel-cells = < 0x1 >;                                    /* in zephyr\dts\arm\st\h7\stm32h7.dtsi:874 */
 			resolutions = < 0x80e20c 0x75e20c 0x66e20c 0x53e20c 0x47e20c >; /* in zephyr\dts\arm\st\h7\stm32h7.dtsi:875 */
 			sampling-times = < 0x2 0x3 0x9 0x11 0x21 0x41 0x184 0x32b >;    /* in zephyr\dts\arm\st\h7\stm32h7.dtsi:880 */
 			st,adc-sequencer = "FULLY_CONFIGURABLE";                        /* in zephyr\dts\arm\st\h7\stm32h7.dtsi:881 */
 			st,adc-oversampler = "OVERSAMPLER_EXTENDED";                    /* in zephyr\dts\arm\st\h7\stm32h7.dtsi:882 */
+			st,adc-clock-source = "SYNC";                                   /* in stm32-rs485\boards\stm32h747i_disco_stm32h747xx_m7.overlay:33 */
+			st,adc-prescaler = < 0x4 >;                                     /* in stm32-rs485\boards\stm32h747i_disco_stm32h747xx_m7.overlay:34 */
+			status = "okay";                                                /* in stm32-rs485\boards\stm32h747i_disco_stm32h747xx_m7.overlay:35 */
 		};
 
 		/* node '/soc/adc@40022100' defined in zephyr\dts\arm\st\h7\stm32h7.dtsi:885 */
@@ -1843,12 +1845,14 @@
 			reg = < 0x40022100 0x400 >;                                     /* in zephyr\dts\arm\st\h7\stm32h7.dtsi:887 */
 			clocks = < &rcc 0xd8 0x20 >;                                    /* in zephyr\dts\arm\st\h7\stm32h7.dtsi:888 */
 			interrupts = < 0x12 0x0 >;                                      /* in zephyr\dts\arm\st\h7\stm32h7.dtsi:889 */
-			status = "disabled";                                            /* in zephyr\dts\arm\st\h7\stm32h7.dtsi:890 */
 			#io-channel-cells = < 0x1 >;                                    /* in zephyr\dts\arm\st\h7\stm32h7.dtsi:891 */
 			resolutions = < 0x80e20c 0x75e20c 0x66e20c 0x53e20c 0x47e20c >; /* in zephyr\dts\arm\st\h7\stm32h7.dtsi:892 */
 			sampling-times = < 0x2 0x3 0x9 0x11 0x21 0x41 0x184 0x32b >;    /* in zephyr\dts\arm\st\h7\stm32h7.dtsi:897 */
 			st,adc-sequencer = "FULLY_CONFIGURABLE";                        /* in zephyr\dts\arm\st\h7\stm32h7.dtsi:898 */
 			st,adc-oversampler = "OVERSAMPLER_EXTENDED";                    /* in zephyr\dts\arm\st\h7\stm32h7.dtsi:899 */
+			st,adc-clock-source = "SYNC";                                   /* in stm32-rs485\boards\stm32h747i_disco_stm32h747xx_m7.overlay:39 */
+			st,adc-prescaler = < 0x4 >;                                     /* in stm32-rs485\boards\stm32h747i_disco_stm32h747xx_m7.overlay:40 */
+			status = "okay";                                                /* in stm32-rs485\boards\stm32h747i_disco_stm32h747xx_m7.overlay:41 */
 		};
 
 		/* node '/soc/adc@40022300' defined in zephyr\dts\arm\st\h7\stm32h7.dtsi:903 */
@@ -1871,12 +1875,14 @@
 			reg = < 0x58026000 0x400 >;                                     /* in zephyr\dts\arm\st\h7\stm32h7.dtsi:922 */
 			clocks = < &rcc 0xe0 0x1000000 >;                               /* in zephyr\dts\arm\st\h7\stm32h7.dtsi:923 */
 			interrupts = < 0x7f 0x0 >;                                      /* in zephyr\dts\arm\st\h7\stm32h7.dtsi:924 */
-			status = "disabled";                                            /* in zephyr\dts\arm\st\h7\stm32h7.dtsi:925 */
 			#io-channel-cells = < 0x1 >;                                    /* in zephyr\dts\arm\st\h7\stm32h7.dtsi:926 */
 			resolutions = < 0x80e20c 0x75e20c 0x66e20c 0x53e20c 0x47e20c >; /* in zephyr\dts\arm\st\h7\stm32h7.dtsi:927 */
 			sampling-times = < 0x2 0x3 0x9 0x11 0x21 0x41 0x184 0x32b >;    /* in zephyr\dts\arm\st\h7\stm32h7.dtsi:932 */
 			st,adc-sequencer = "FULLY_CONFIGURABLE";                        /* in zephyr\dts\arm\st\h7\stm32h7.dtsi:933 */
 			st,adc-oversampler = "OVERSAMPLER_EXTENDED";                    /* in zephyr\dts\arm\st\h7\stm32h7.dtsi:934 */
+			st,adc-clock-source = "SYNC";                                   /* in stm32-rs485\boards\stm32h747i_disco_stm32h747xx_m7.overlay:45 */
+			st,adc-prescaler = < 0x4 >;                                     /* in stm32-rs485\boards\stm32h747i_disco_stm32h747xx_m7.overlay:46 */
+			status = "okay";                                                /* in stm32-rs485\boards\stm32h747i_disco_stm32h747xx_m7.overlay:47 */
 			phandle = < 0x7a >;                                             /* in zephyr\dts\arm\st\h7\stm32h7.dtsi:1144 */
 		};
 

@@ -79,6 +79,18 @@ uintptr_t z_mrsh_log_frontend_filter_set(uintptr_t arg1, uintptr_t arg2, uintptr
          uintptr_t arg4, uintptr_t arg5, uintptr_t arg6, void *ssf);
 
 __weak ALIAS_OF(handler_no_syscall)
+uintptr_t z_mrsh_adc_channel_setup(uintptr_t arg1, uintptr_t arg2, uintptr_t arg3,
+         uintptr_t arg4, uintptr_t arg5, uintptr_t arg6, void *ssf);
+
+__weak ALIAS_OF(handler_no_syscall)
+uintptr_t z_mrsh_adc_read(uintptr_t arg1, uintptr_t arg2, uintptr_t arg3,
+         uintptr_t arg4, uintptr_t arg5, uintptr_t arg6, void *ssf);
+
+__weak ALIAS_OF(handler_no_syscall)
+uintptr_t z_mrsh_adc_read_async(uintptr_t arg1, uintptr_t arg2, uintptr_t arg3,
+         uintptr_t arg4, uintptr_t arg5, uintptr_t arg6, void *ssf);
+
+__weak ALIAS_OF(handler_no_syscall)
 uintptr_t z_mrsh_sys_cache_data_flush_range(uintptr_t arg1, uintptr_t arg2, uintptr_t arg3,
          uintptr_t arg4, uintptr_t arg5, uintptr_t arg6, void *ssf);
 
@@ -700,6 +712,9 @@ const _k_syscall_handler_t _k_syscall_table[K_SYSCALL_LIMIT] = {
 	[K_SYSCALL_LOG_BUFFERED_CNT] = z_mrsh_log_buffered_cnt,
 	[K_SYSCALL_LOG_FILTER_SET] = z_mrsh_log_filter_set,
 	[K_SYSCALL_LOG_FRONTEND_FILTER_SET] = z_mrsh_log_frontend_filter_set,
+	[K_SYSCALL_ADC_CHANNEL_SETUP] = z_mrsh_adc_channel_setup,
+	[K_SYSCALL_ADC_READ] = z_mrsh_adc_read,
+	[K_SYSCALL_ADC_READ_ASYNC] = z_mrsh_adc_read_async,
 	[K_SYSCALL_SYS_CACHE_DATA_FLUSH_RANGE] = z_mrsh_sys_cache_data_flush_range,
 	[K_SYSCALL_SYS_CACHE_DATA_INVD_RANGE] = z_mrsh_sys_cache_data_invd_range,
 	[K_SYSCALL_SYS_CACHE_DATA_FLUSH_AND_INVD_RANGE] = z_mrsh_sys_cache_data_flush_and_invd_range,

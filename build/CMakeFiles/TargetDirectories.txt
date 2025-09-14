@@ -175,6 +175,9 @@ C:/Work/zephyrproject/stm32-rs485/build/zephyr/drivers/usb/common/CMakeFiles/edi
 C:/Work/zephyrproject/stm32-rs485/build/zephyr/drivers/usb/common/CMakeFiles/rebuild_cache.dir
 C:/Work/zephyrproject/stm32-rs485/build/zephyr/drivers/usb_c/CMakeFiles/edit_cache.dir
 C:/Work/zephyrproject/stm32-rs485/build/zephyr/drivers/usb_c/CMakeFiles/rebuild_cache.dir
+C:/Work/zephyrproject/stm32-rs485/build/zephyr/drivers/adc/CMakeFiles/drivers__adc.dir
+C:/Work/zephyrproject/stm32-rs485/build/zephyr/drivers/adc/CMakeFiles/edit_cache.dir
+C:/Work/zephyrproject/stm32-rs485/build/zephyr/drivers/adc/CMakeFiles/rebuild_cache.dir
 C:/Work/zephyrproject/stm32-rs485/build/zephyr/drivers/cache/CMakeFiles/drivers__cache.dir
 C:/Work/zephyrproject/stm32-rs485/build/zephyr/drivers/cache/CMakeFiles/edit_cache.dir
 C:/Work/zephyrproject/stm32-rs485/build/zephyr/drivers/cache/CMakeFiles/rebuild_cache.dir

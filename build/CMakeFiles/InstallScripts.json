@@ -68,6 +68,7 @@
 		"C:/Work/zephyrproject/stm32-rs485/build/zephyr/drivers/usb/cmake_install.cmake",
 		"C:/Work/zephyrproject/stm32-rs485/build/zephyr/drivers/usb/common/cmake_install.cmake",
 		"C:/Work/zephyrproject/stm32-rs485/build/zephyr/drivers/usb_c/cmake_install.cmake",
+		"C:/Work/zephyrproject/stm32-rs485/build/zephyr/drivers/adc/cmake_install.cmake",
 		"C:/Work/zephyrproject/stm32-rs485/build/zephyr/drivers/cache/cmake_install.cmake",
 		"C:/Work/zephyrproject/stm32-rs485/build/zephyr/drivers/clock_control/cmake_install.cmake",
 		"C:/Work/zephyrproject/stm32-rs485/build/zephyr/drivers/console/cmake_install.cmake",

@@ -40,13 +40,13 @@ case K_OBJ_RTIO_IODEV: ret = "rtio_iodev"; break;
 case K_OBJ_SENSOR_DECODER_API: ret = "sensor_decoder_api"; break;
 #endif
 /* Driver subsystems */
+case K_OBJ_DRIVER_ADC: ret = "adc driver"; break;
 case K_OBJ_DRIVER_GPIO: ret = "gpio driver"; break;
 case K_OBJ_DRIVER_I2C: ret = "i2c driver"; break;
 case K_OBJ_DRIVER_I2C_TARGET: ret = "i2c_target driver"; break;
 case K_OBJ_DRIVER_RESET: ret = "reset driver"; break;
 case K_OBJ_DRIVER_SHARED_IRQ: ret = "shared_irq driver"; break;
 case K_OBJ_DRIVER_CRYPTO: ret = "crypto driver"; break;
-case K_OBJ_DRIVER_ADC: ret = "adc driver"; break;
 case K_OBJ_DRIVER_AUXDISPLAY: ret = "auxdisplay driver"; break;
 case K_OBJ_DRIVER_BBRAM: ret = "bbram driver"; break;
 case K_OBJ_DRIVER_BT_HCI: ret = "bt_hci driver"; break;
