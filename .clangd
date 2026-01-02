@@ -1,0 +1,10 @@
+CompileFlags:
+  # Use the Zephyr-generated compilation database
+  CompilationDatabase: build
+  # Drop GCC-only flags that clangd cannot parse
+  Remove: [-fno-printf-return-value, -mfp16-format=ieee, -fno-reorder-functions]
+
+Diagnostics:
+  # Silence noise from removed/unknown args when using clangd
+  Suppress: ["-Wunused-command-line-argument"]
+

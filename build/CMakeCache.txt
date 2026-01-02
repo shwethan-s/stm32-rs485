@@ -182,10 +182,7 @@ CMAKE_FIND_PACKAGE_REDIRECTS_DIR:STATIC=C:/Work/zephyrproject/stm32-rs485/build/
 CMAKE_GCOV:FILEPATH=C:/ZephyrSDK/zephyr-sdk-0.17.4/aarch64-zephyr-elf/bin/aarch64-zephyr-elf-gcov.exe
 
 //Path to a program.
-CMAKE_GDB:FILEPATH=C:/ZephyrSDK/zephyr-sdk-0.17.4/arm-zephyr-eabi/bin/arm-zephyr-eabi-gdb.exe
-
-//Path to a program.
-CMAKE_GDB_NO_PY:FILEPATH=C:/ZephyrSDK/zephyr-sdk-0.17.4/arm-zephyr-eabi/bin/arm-zephyr-eabi-gdb.exe
+CMAKE_GDB:FILEPATH=C:/ZephyrSDK/zephyr-sdk-0.17.4/arm-zephyr-eabi/bin/arm-zephyr-eabi-gdb-py.exe
 
 //Install path prefix, prepended onto install directories.
 CMAKE_INSTALL_PREFIX:PATH=C:/Program Files (x86)/Zephyr-Kernel

@@ -147,7 +147,7 @@ static size_t build_probe_frame(uint8_t addr, uint8_t *out)
 /* ===================== Tuned timings (aligned to your Python) ===================== */
 #define PRE_SEND_QUIET_MS     5
 #define TURNAROUND_DELAY_MS   100
-#define READ_WINDOW_MS        400
+#define READ_WINDOW_MS        400 
 #define SILENT_BREAK_MS       30
 #define INTER_ADDR_DELAY_MS   250
 #define MIN_VALID_REPLYLEN    12
@@ -201,7 +201,7 @@ static void scan_thread(void *p1, void *p2, void *p3)
         bool present = probe_address(addr);
 
         if (present) {
-            snprintf(m.text, sizeof(m.text), "✅ Found device at %u", addr);
+            snprintf(m.text, sizeof(m.text), "Controller address is %u", addr);
             m.done = true;
             k_msgq_put(&scan_q, &m, K_FOREVER);
             scanning = false;
@@ -306,29 +306,31 @@ static int adc_read_ch(const struct device *adc, uint8_t ch, uint16_t *val)
 
 /* ===================== Main ===================== */
 
-void main(void)
+int main(void)
 {
     const struct device *display = DEVICE_DT_GET(DT_CHOSEN(zephyr_display));
     if (!device_is_ready(display)) {
         printk("Display not ready\n");
-        return;
+        return 1;
     }
     if (!device_is_ready(uart_dev)) {
         printk("UART8 not ready\n");
-        return;
+        return 1;
     }
     if (uart_set_19200_8O1(uart_dev)) {
         printk("UART8 configure failed\n");
-        return;
+        return 1;
     }
 
     /* ---- Joystick ADC init ---- */
     if (!device_is_ready(adc3_dev)) {
         printk("ADC3 not ready\n");
-        return;
+        return 1;
     }
     adc_setup_ch(adc3_dev, JOY_CH_X);
     adc_setup_ch(adc3_dev, JOY_CH_Y);
+
+
 
     /* ---- UI ---- */
     lv_obj_t *root = lv_obj_create(lv_scr_act());
