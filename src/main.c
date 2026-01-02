@@ -67,6 +67,17 @@ K_THREAD_STACK_DEFINE(scan_stack, SCAN_STACK_SIZE);
 static struct k_thread scan_thread_data;
 
 static volatile bool scanning = false;
+static volatile bool changing = false;
+static bool selecting_change = false;
+static int change_candidate = 1;
+static int last_found_addr = -1;
+static int change_old_addr = -1;
+static int change_new_addr = -1;
+
+#define CHANGE_STACK_SIZE 2048
+#define CHANGE_PRIO       5
+K_THREAD_STACK_DEFINE(change_stack, CHANGE_STACK_SIZE);
+static struct k_thread change_thread_data;
 
 /* ===================== UART helpers ===================== */
 
@@ -144,6 +155,21 @@ static size_t build_probe_frame(uint8_t addr, uint8_t *out)
     return sizeof(TEMPLATE);
 }
 
+/* ===================== Change-address frame ===================== */
+static size_t build_change_frame(uint8_t old_addr, uint8_t new_addr, uint8_t *out)
+{
+    /* 00 <OLD> FF FB 10 7D 77 01 00 41 00 01 21 00 <NEW> <CHK> */
+    static const uint8_t base[] = {
+        0x00, 0x00, 0xFF, 0xFB, 0x10, 0x7D, 0x77, 0x01,
+        0x00, 0x41, 0x00, 0x01, 0x21, 0x00, 0x00, 0x00
+    };
+    memcpy(out, base, sizeof(base));
+    out[1]  = old_addr;
+    out[14] = new_addr;
+    out[15] = (uint8_t)((0x62 + old_addr + new_addr) & 0xFF); /* checksum */
+    return sizeof(base);
+}
+
 /* ===================== Tuned timings (aligned to your Python) ===================== */
 #define PRE_SEND_QUIET_MS     5
 #define TURNAROUND_DELAY_MS   100
@@ -183,6 +209,27 @@ static bool probe_address(uint8_t addr)
     }
 }
 
+static int send_change_frame(uint8_t old_addr, uint8_t new_addr, uint8_t *rx, size_t rx_cap)
+{
+    uint8_t tx[32];
+    size_t tx_len = build_change_frame(old_addr, new_addr, tx);
+
+    uart_flush_rx(uart_dev);
+    k_msleep(PRE_SEND_QUIET_MS);
+
+    uart_send_bytes(uart_dev, tx, tx_len);
+    k_msleep(TURNAROUND_DELAY_MS);
+
+    int got = uart_recv_window(rx, rx_cap, READ_WINDOW_MS, SILENT_BREAK_MS);
+
+    if (got == 0) {
+        printk("Change addr %u->%u: no reply\n", old_addr, new_addr);
+    } else {
+        printk("Change addr %u->%u: RX %d bytes\n", old_addr, new_addr, got);
+    }
+    return got;
+}
+
 /* ===================== Worker thread ===================== */
 
 static void scan_thread(void *p1, void *p2, void *p3)
@@ -201,6 +248,7 @@ static void scan_thread(void *p1, void *p2, void *p3)
         bool present = probe_address(addr);
 
         if (present) {
+            last_found_addr = addr;
             snprintf(m.text, sizeof(m.text), "Controller address is %u", addr);
             m.done = true;
             k_msgq_put(&scan_q, &m, K_FOREVER);
@@ -215,6 +263,68 @@ static void scan_thread(void *p1, void *p2, void *p3)
     m.done = true;
     k_msgq_put(&scan_q, &m, K_FOREVER);
     scanning = false;
+}
+
+/* ===================== Change-address worker ===================== */
+
+static void change_thread(void *p1, void *p2, void *p3)
+{
+    ARG_UNUSED(p1); ARG_UNUSED(p2); ARG_UNUSED(p3);
+
+    struct scan_msg m;
+    int old_addr = change_old_addr;
+    int new_addr = change_new_addr;
+
+    if (old_addr <= 0) {
+        snprintf(m.text, sizeof(m.text), "Finding current addr...");
+        m.done = false;
+        k_msgq_put(&scan_q, &m, K_FOREVER);
+
+        for (uint8_t addr = 1; addr <= 64; ++addr) {
+            if (probe_address(addr)) {
+                old_addr = addr;
+                last_found_addr = addr;
+                break;
+            }
+            k_msleep(INTER_ADDR_DELAY_MS);
+        }
+
+        if (old_addr <= 0) {
+            snprintf(m.text, sizeof(m.text), "Change failed: no device found");
+            m.done = true;
+            k_msgq_put(&scan_q, &m, K_FOREVER);
+            changing = false;
+            return;
+        }
+    }
+
+    snprintf(m.text, sizeof(m.text), "Changing %d -> %d...", old_addr, new_addr);
+    m.done = false;
+    k_msgq_put(&scan_q, &m, K_FOREVER);
+
+    uint8_t rx[256];
+    send_change_frame((uint8_t)old_addr, (uint8_t)new_addr, rx, sizeof(rx));
+
+    /* Allow device to commit change before probing */
+    k_msleep(150);
+
+    bool new_ok = probe_address((uint8_t)new_addr);
+    bool old_ok = probe_address((uint8_t)old_addr);
+
+    if (new_ok && !old_ok) {
+        last_found_addr = new_addr;
+        snprintf(m.text, sizeof(m.text), "Success: now at %d (was %d)", new_addr, old_addr);
+    } else if (new_ok && old_ok) {
+        snprintf(m.text, sizeof(m.text), "Warn: responds at both %d and %d", new_addr, old_addr);
+    } else if (!new_ok && old_ok) {
+        snprintf(m.text, sizeof(m.text), "Failed: still at %d, not at %d", old_addr, new_addr);
+    } else {
+        snprintf(m.text, sizeof(m.text), "No response after change attempt");
+    }
+    m.done = true;
+    k_msgq_put(&scan_q, &m, K_FOREVER);
+
+    changing = false;
 }
 
 /* ===================== LVGL helpers ===================== */
@@ -246,24 +356,69 @@ static void set_status(const char *txt)
 
 /* Forward decl so we can call from joystick "click" */
 static void start_scan(void);
+static void start_change_selection(void);
+static void cancel_change_selection(void);
+static void start_change_thread(int new_addr);
+static void update_change_prompt(void);
 
 /* ===================== UI callbacks ===================== */
 
 static void btn_check_event_cb(lv_event_t *e)
 {
     ARG_UNUSED(e);
-    if (scanning) return;
+    if (selecting_change) {
+        cancel_change_selection();
+        return;
+    }
+    if (scanning || changing) return;
     start_scan();
 }
 
 static void btn_change_event_cb(lv_event_t *e)
 {
     ARG_UNUSED(e);
-    if (scanning) return;
+    if (scanning || changing) return;
+    if (!selecting_change) {
+        start_change_selection();
+    } else {
+        cancel_change_selection();
+    }
+}
 
-    /* Placeholder “Change Address” action */
-    set_status("Change Address selected (TODO)");
-    printk(">>> [ACTION] Change Address triggered (placeholder)\n");
+static void update_change_prompt(void)
+{
+    char buf[96];
+    snprintf(buf, sizeof(buf), "Select new addr: %d (UP/DOWN, press to confirm, Check cancels)", change_candidate);
+    set_status(buf);
+}
+
+static void start_change_selection(void)
+{
+    selecting_change = true;
+    change_candidate = (last_found_addr > 0) ? last_found_addr : 1;
+    update_change_prompt();
+}
+
+static void cancel_change_selection(void)
+{
+    selecting_change = false;
+    set_status("Change canceled");
+}
+
+static void start_change_thread(int new_addr)
+{
+    change_new_addr = new_addr;
+    change_old_addr = last_found_addr; /* may be -1; thread will scan if unknown */
+    selecting_change = false;
+    changing = true;
+
+    lv_obj_add_state(btn_check, LV_STATE_DISABLED);
+    lv_obj_add_state(btn_change, LV_STATE_DISABLED);
+    lv_obj_clear_flag(status_lbl, LV_OBJ_FLAG_HIDDEN);
+
+    k_thread_create(&change_thread_data, change_stack, K_THREAD_STACK_SIZEOF(change_stack),
+                    change_thread, NULL, NULL, NULL,
+                    K_PRIO_PREEMPT(CHANGE_PRIO), 0, K_NO_WAIT);
 }
 
 /* Start scan (shared by button click + joystick click) */
@@ -434,7 +589,6 @@ int main(void)
         }
         last_dir_x = dir_x;
 
-        /* Y axis controls selection */
         if (last_dir_y == 0) {
             if (dy < -DEADZONE_ENTER) dir_y = -1;   /* UP */
             else if (dy > DEADZONE_ENTER) dir_y = +1; /* DOWN */
@@ -445,14 +599,25 @@ int main(void)
         }
 
         if (dir_y != last_dir_y) {
-            if (dir_y == -1) {
-                selected_index = (selected_index - 1 + MENU_ITEMS) % MENU_ITEMS;
-                update_highlight();
-            } else if (dir_y == +1) {
-                selected_index = (selected_index + 1) % MENU_ITEMS;
-                update_highlight();
+            if (selecting_change) {
+                if (dir_y == -1) {
+                    change_candidate = (change_candidate - 2 + 64) % 64 + 1; /* wrap 1..64 */
+                    update_change_prompt();
+                } else if (dir_y == +1) {
+                    change_candidate = (change_candidate % 64) + 1;
+                    update_change_prompt();
+                }
+                last_dir_y = dir_y;
+            } else {
+                if (dir_y == -1) {
+                    selected_index = (selected_index - 1 + MENU_ITEMS) % MENU_ITEMS;
+                    update_highlight();
+                } else if (dir_y == +1) {
+                    selected_index = (selected_index + 1) % MENU_ITEMS;
+                    update_highlight();
+                }
+                last_dir_y = dir_y;
             }
-            last_dir_y = dir_y;
         }
 
         /* “Press” detection on 4-pin joystick: X forced to max (1023) */
@@ -460,8 +625,10 @@ int main(void)
         if (pressed != last_click) {
             if (pressed) {
                 /* Trigger selected item */
-                if (!scanning) {
-                    if (selected_index == 0) {
+                if (!scanning && !changing) {
+                    if (selecting_change) {
+                        start_change_thread(change_candidate);
+                    } else if (selected_index == 0) {
                         /* Check Address behaves exactly like before */
                         btn_check_event_cb(NULL);
                     } else {
