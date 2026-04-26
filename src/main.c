@@ -15,13 +15,16 @@ extern const lv_font_t lv_font_montserrat_14;
 extern const lv_font_t lv_font_montserrat_28;
 #define FONT_TITLE   lv_font_montserrat_28
 #define FONT_STATUS  lv_font_montserrat_28
+#define FONT_BIG     lv_font_montserrat_28
 #elif defined(CONFIG_LV_FONT_MONTSERRAT_18) || defined(CONFIG_LVGL_FONT_MONTSERRAT_18)
 extern const lv_font_t lv_font_montserrat_18;
 #define FONT_TITLE   lv_font_montserrat_18
 #define FONT_STATUS  lv_font_montserrat_18
+#define FONT_BIG     lv_font_montserrat_18
 #else
 #define FONT_TITLE   lv_font_montserrat_14
 #define FONT_STATUS  lv_font_montserrat_14
+#define FONT_BIG     lv_font_montserrat_14
 #endif
 #if defined(CONFIG_LV_FONT_MONTSERRAT_18) || defined(CONFIG_LVGL_FONT_MONTSERRAT_18)
 extern const lv_font_t lv_font_montserrat_18;
@@ -41,21 +44,29 @@ static const struct device *const adc3_dev = DEVICE_DT_GET(ADC3_NODE);
 
 #define JOY_CH_X   0               /* ADC3_IN0 (A4/PC2) */
 #define JOY_CH_Y   1               /* ADC3_IN1 (A5/PC3) */
-#define JOY_RES    10              /* 10-bit to match datasheet’s 0..1023 */
+#define JOY_RES    10              /* 10-bit to match datasheet's 0..1023 */
 #define JOY_MAX    ((1 << JOY_RES) - 1)   /* 1023 */
 
 /* Deadzone/hysteresis tuned for 10-bit */
 #define DEADZONE_ENTER  90
 #define DEADZONE_EXIT   60
 
-/* ---------- UI handles ---------- */
+/* ---------- UI handles (all on a single root container) ---------- */
+static lv_obj_t *root_cont;
+static lv_obj_t *title_lbl;
+static lv_obj_t *btn_check;
+static lv_obj_t *btn_change;
 static lv_obj_t *status_lbl;
-static lv_obj_t *btn_check;   /* “Check Address” */
-static lv_obj_t *btn_change;  /* “Change Address” */
+static lv_obj_t *btn_back;
+static lv_obj_t *btn_up;
+static lv_obj_t *addr_display_lbl;
+static lv_obj_t *btn_down;
+static lv_obj_t *btn_confirm;
 
 /* ---------- Selection state (0=Check, 1=Change) ---------- */
 static int selected_index = 0;
 static const int MENU_ITEMS = 2;
+static bool on_change_screen = false;
 
 /* ---------- Scan worker thread + message queue ---------- */
 struct scan_msg { char text[96]; bool done; };
@@ -67,12 +78,18 @@ K_THREAD_STACK_DEFINE(scan_stack, SCAN_STACK_SIZE);
 static struct k_thread scan_thread_data;
 
 static volatile bool scanning = false;
+static volatile bool scan_cancel = false;
 static volatile bool changing = false;
 static bool selecting_change = false;
 static int change_candidate = 1;
 static int last_found_addr = -1;
 static int change_old_addr = -1;
 static int change_new_addr = -1;
+static bool up_held = false;
+static bool down_held = false;
+static int64_t hold_next_ms = 0;
+#define HOLD_INITIAL_DELAY_MS   350
+#define HOLD_REPEAT_INTERVAL_MS 120
 
 #define CHANGE_STACK_SIZE 2048
 #define CHANGE_PRIO       5
@@ -173,7 +190,7 @@ static size_t build_change_frame(uint8_t old_addr, uint8_t new_addr, uint8_t *ou
 /* ===================== Tuned timings (aligned to your Python) ===================== */
 #define PRE_SEND_QUIET_MS     5
 #define TURNAROUND_DELAY_MS   100
-#define READ_WINDOW_MS        400 
+#define READ_WINDOW_MS        400
 #define SILENT_BREAK_MS       30
 #define INTER_ADDR_DELAY_MS   250
 #define MIN_VALID_REPLYLEN    12
@@ -183,17 +200,13 @@ static bool probe_address(uint8_t addr)
     uint8_t tx[32], rx[512];
     size_t tx_len = build_probe_frame(addr, tx);
 
-    /* Ensure clean RX FIFO and a brief idle period before sending */
     uart_flush_rx(uart_dev);
     k_msleep(PRE_SEND_QUIET_MS);
 
-    /* Send probe (Gravity RS-485 does auto TX/RX switching) */
     uart_send_bytes(uart_dev, tx, tx_len);
 
-    /* TX->RX turnaround */
     k_msleep(TURNAROUND_DELAY_MS);
 
-    /* Accumulate full reply with early-quiet break */
     int got = uart_recv_window(rx, sizeof(rx), READ_WINDOW_MS, SILENT_BREAK_MS);
 
     if (got >= MIN_VALID_REPLYLEN) {
@@ -241,6 +254,10 @@ static void scan_thread(void *p1, void *p2, void *p3)
     k_msgq_put(&scan_q, &m, K_FOREVER);
 
     for (uint8_t addr = 1; addr <= 64; ++addr) {
+        if (scan_cancel) {
+            break;
+        }
+
         snprintf(m.text, sizeof(m.text), "Checking addr %u...", addr);
         m.done = false;
         k_msgq_put(&scan_q, &m, K_FOREVER);
@@ -253,15 +270,20 @@ static void scan_thread(void *p1, void *p2, void *p3)
             m.done = true;
             k_msgq_put(&scan_q, &m, K_FOREVER);
             scanning = false;
-            return;   // stop after first hit
+            return;
         }
 
         k_msleep(INTER_ADDR_DELAY_MS);
     }
 
-    snprintf(m.text, sizeof(m.text), "Scan complete. No devices.");
+    if (scan_cancel) {
+        snprintf(m.text, sizeof(m.text), "Scan cancelled.");
+    } else {
+        snprintf(m.text, sizeof(m.text), "Scan complete. No devices.");
+    }
     m.done = true;
     k_msgq_put(&scan_q, &m, K_FOREVER);
+    scan_cancel = false;
     scanning = false;
 }
 
@@ -305,7 +327,6 @@ static void change_thread(void *p1, void *p2, void *p3)
     uint8_t rx[256];
     send_change_frame((uint8_t)old_addr, (uint8_t)new_addr, rx, sizeof(rx));
 
-    /* Allow device to commit change before probing */
     k_msleep(150);
 
     bool new_ok = probe_address((uint8_t)new_addr);
@@ -331,14 +352,12 @@ static void change_thread(void *p1, void *p2, void *p3)
 
 static void update_highlight(void)
 {
-    /* Common base style */
     lv_obj_set_style_border_width(btn_check, 3, 0);
     lv_obj_set_style_border_color(btn_check, lv_color_hex(0x0A4EA6), 0);
 
     lv_obj_set_style_border_width(btn_change, 3, 0);
     lv_obj_set_style_border_color(btn_change, lv_color_hex(0x0A4EA6), 0);
 
-    /* Focused one gets thicker yellow border */
     if (selected_index == 0) {
         lv_obj_set_style_border_width(btn_check, 6, 0);
         lv_obj_set_style_border_color(btn_check, lv_color_hex(0xFFD166), 0);
@@ -348,29 +367,26 @@ static void update_highlight(void)
     }
 }
 
-static void set_status(const char *txt)
-{
-    lv_obj_clear_flag(status_lbl, LV_OBJ_FLAG_HIDDEN);
-    lv_label_set_text(status_lbl, txt);
-}
-
-/* Forward decl so we can call from joystick "click" */
+/* Forward declarations */
 static void start_scan(void);
-static void start_change_selection(void);
-static void cancel_change_selection(void);
+static void show_change_screen(void);
+static void hide_change_screen(void);
 static void start_change_thread(int new_addr);
-static void update_change_prompt(void);
+static void update_addr_display(void);
+static void addr_increment(void);
+static void addr_decrement(void);
 
 /* ===================== UI callbacks ===================== */
 
 static void btn_check_event_cb(lv_event_t *e)
 {
     ARG_UNUSED(e);
-    if (selecting_change) {
-        cancel_change_selection();
+    if (on_change_screen) return;
+    if (scanning) {
+        scan_cancel = true;
         return;
     }
-    if (scanning || changing) return;
+    if (changing) return;
     start_scan();
 }
 
@@ -378,37 +394,120 @@ static void btn_change_event_cb(lv_event_t *e)
 {
     ARG_UNUSED(e);
     if (scanning || changing) return;
-    if (!selecting_change) {
-        start_change_selection();
-    } else {
-        cancel_change_selection();
+    if (!on_change_screen) {
+        show_change_screen();
     }
 }
 
-static void update_change_prompt(void)
+static void update_addr_display(void)
 {
-    char buf[96];
-    snprintf(buf, sizeof(buf), "Select new addr: %d (UP/DOWN, press to confirm, Check cancels)", change_candidate);
-    set_status(buf);
+    char buf[8];
+    snprintf(buf, sizeof(buf), "%d", change_candidate);
+    lv_label_set_text(addr_display_lbl, buf);
 }
 
-static void start_change_selection(void)
+static void addr_increment(void)
 {
+    change_candidate = (change_candidate % 64) + 1;
+    update_addr_display();
+}
+
+static void addr_decrement(void)
+{
+    change_candidate = (change_candidate - 2 + 64) % 64 + 1;
+    update_addr_display();
+}
+
+static void show_change_screen(void)
+{
+    on_change_screen = true;
     selecting_change = true;
     change_candidate = (last_found_addr > 0) ? last_found_addr : 1;
-    update_change_prompt();
+    update_addr_display();
+
+    /* Hide main-mode widgets */
+    lv_label_set_text(title_lbl, "Change Address");
+    lv_obj_add_flag(btn_check, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(btn_change, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(status_lbl, LV_OBJ_FLAG_HIDDEN);
+
+    /* Show change-mode widgets */
+    lv_obj_clear_flag(btn_back, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_clear_flag(btn_up, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_clear_flag(addr_display_lbl, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_clear_flag(btn_down, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_clear_flag(btn_confirm, LV_OBJ_FLAG_HIDDEN);
+
+    lv_obj_set_style_pad_row(root_cont, 8, 0);
 }
 
-static void cancel_change_selection(void)
+static void hide_change_screen(void)
 {
+    on_change_screen = false;
     selecting_change = false;
-    set_status("Change canceled");
+    up_held = false;
+    down_held = false;
+
+    /* Hide change-mode widgets */
+    lv_obj_add_flag(btn_back, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(btn_up, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(addr_display_lbl, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(btn_down, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(btn_confirm, LV_OBJ_FLAG_HIDDEN);
+
+    /* Show main-mode widgets */
+    lv_label_set_text(title_lbl, "RS-485 Controller Tools");
+    lv_obj_clear_flag(btn_check, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_clear_flag(btn_change, LV_OBJ_FLAG_HIDDEN);
+
+    lv_obj_set_style_pad_row(root_cont, 24, 0);
+    update_highlight();
+}
+
+/* ---------- Change-screen touch callbacks ---------- */
+
+static void btn_up_event_cb(lv_event_t *e)
+{
+    lv_event_code_t code = lv_event_get_code(e);
+    if (code == LV_EVENT_PRESSED) {
+        up_held = true;
+        addr_increment();
+        hold_next_ms = k_uptime_get() + HOLD_INITIAL_DELAY_MS;
+    } else if (code == LV_EVENT_RELEASED || code == LV_EVENT_PRESS_LOST) {
+        up_held = false;
+    }
+}
+
+static void btn_down_event_cb(lv_event_t *e)
+{
+    lv_event_code_t code = lv_event_get_code(e);
+    if (code == LV_EVENT_PRESSED) {
+        down_held = true;
+        addr_decrement();
+        hold_next_ms = k_uptime_get() + HOLD_INITIAL_DELAY_MS;
+    } else if (code == LV_EVENT_RELEASED || code == LV_EVENT_PRESS_LOST) {
+        down_held = false;
+    }
+}
+
+static void btn_back_event_cb(lv_event_t *e)
+{
+    ARG_UNUSED(e);
+    hide_change_screen();
+}
+
+static void btn_confirm_event_cb(lv_event_t *e)
+{
+    ARG_UNUSED(e);
+    int addr = change_candidate;
+    hide_change_screen();
+    start_change_thread(addr);
 }
 
 static void start_change_thread(int new_addr)
 {
     change_new_addr = new_addr;
-    change_old_addr = last_found_addr; /* may be -1; thread will scan if unknown */
+    change_old_addr = last_found_addr;
     selecting_change = false;
     changing = true;
 
@@ -425,8 +524,9 @@ static void start_change_thread(int new_addr)
 static void start_scan(void)
 {
     scanning = true;
+    scan_cancel = false;
 
-    lv_obj_add_state(btn_check, LV_STATE_DISABLED);
+    /* Keep btn_check enabled so the user can tap it again to cancel */
     lv_obj_add_state(btn_change, LV_STATE_DISABLED);
     lv_obj_clear_flag(status_lbl, LV_OBJ_FLAG_HIDDEN);
 
@@ -485,25 +585,85 @@ int main(void)
     adc_setup_ch(adc3_dev, JOY_CH_X);
     adc_setup_ch(adc3_dev, JOY_CH_Y);
 
+    /* ---- UI: single root container, toggle widget visibility for modes ---- */
+    root_cont = lv_obj_create(lv_scr_act());
+    lv_obj_set_size(root_cont, LV_PCT(100), LV_PCT(100));
+    lv_obj_set_style_pad_all(root_cont, 0, 0);
+    lv_obj_set_flex_flow(root_cont, LV_FLEX_FLOW_COLUMN);
+    lv_obj_set_flex_align(root_cont, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+    lv_obj_set_style_pad_row(root_cont, 24, 0);
 
+    /* Title (shared, text changes between modes) */
+    title_lbl = lv_label_create(root_cont);
+    lv_label_set_text(title_lbl, "RS-485 Controller Tools");
+    lv_obj_set_width(title_lbl, LV_PCT(100));
+    lv_obj_set_style_text_align(title_lbl, LV_TEXT_ALIGN_CENTER, 0);
+    lv_obj_set_style_text_font(title_lbl, &FONT_TITLE, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    /* ---- UI ---- */
-    lv_obj_t *root = lv_obj_create(lv_scr_act());
-    lv_obj_set_size(root, LV_PCT(100), LV_PCT(100));
-    lv_obj_set_style_pad_all(root, 0, 0);
-    lv_obj_set_flex_flow(root, LV_FLEX_FLOW_COLUMN);
-    lv_obj_set_flex_align(root, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
-    lv_obj_set_style_pad_row(root, 24, 0);
+    /*
+     * Widget creation order determines flex layout order.
+     * Hidden widgets are skipped by flex, so both modes lay out correctly.
+     *
+     * Change-mode: title, btn_back, btn_up, addr_display, btn_down, btn_confirm
+     * Main-mode:   title, btn_check, btn_change, status_lbl
+     */
 
-    lv_obj_t *title = lv_label_create(root);
-    lv_label_set_text(title, "RS-485 Controller Tools");
-    lv_obj_set_width(title, LV_PCT(100));
-    lv_obj_set_style_text_align(title, LV_TEXT_ALIGN_CENTER, 0);
-    lv_obj_set_style_text_font(title, &FONT_TITLE, LV_PART_MAIN | LV_STATE_DEFAULT);
+    /* -- Change-mode widgets (hidden initially) -- */
 
-    /* Button: Check Address (scan) */
-    btn_check = lv_btn_create(root);
-    lv_obj_set_size(btn_check, LV_PCT(90), 80);
+    btn_back = lv_btn_create(root_cont);
+    lv_obj_set_size(btn_back, LV_PCT(50), 38);
+    lv_obj_set_style_radius(btn_back, 12, 0);
+    lv_obj_set_style_bg_color(btn_back, lv_color_hex(0x444444), 0);
+    lv_obj_set_style_border_color(btn_back, lv_color_hex(0x666666), 0);
+    lv_obj_set_style_border_width(btn_back, 2, 0);
+    lv_obj_add_event_cb(btn_back, btn_back_event_cb, LV_EVENT_CLICKED, NULL);
+    lv_obj_set_style_margin_bottom(btn_back, 12, 0);
+    lv_obj_add_flag(btn_back, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_t *lbl_back = lv_label_create(btn_back);
+    lv_label_set_text(lbl_back, LV_SYMBOL_LEFT " Back");
+    lv_obj_set_style_text_font(lbl_back, &FONT_BUTTON, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_center(lbl_back);
+
+    btn_up = lv_btn_create(root_cont);
+    lv_obj_set_size(btn_up, LV_PCT(65), 55);
+    lv_obj_set_style_radius(btn_up, 14, 0);
+    lv_obj_set_style_bg_color(btn_up, lv_color_hex(0x2D6A4F), 0);
+    lv_obj_set_style_border_color(btn_up, lv_color_hex(0x1B4332), 0);
+    lv_obj_set_style_border_width(btn_up, 3, 0);
+    lv_obj_add_event_cb(btn_up, btn_up_event_cb, LV_EVENT_PRESSED, NULL);
+    lv_obj_add_event_cb(btn_up, btn_up_event_cb, LV_EVENT_RELEASED, NULL);
+    lv_obj_add_event_cb(btn_up, btn_up_event_cb, LV_EVENT_PRESS_LOST, NULL);
+    lv_obj_add_flag(btn_up, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_t *lbl_up = lv_label_create(btn_up);
+    lv_label_set_text(lbl_up, LV_SYMBOL_UP);
+    lv_obj_set_style_text_font(lbl_up, &FONT_BIG, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_center(lbl_up);
+
+    addr_display_lbl = lv_label_create(root_cont);
+    lv_label_set_text(addr_display_lbl, "1");
+    lv_obj_set_style_text_font(addr_display_lbl, &FONT_BIG, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(addr_display_lbl, LV_TEXT_ALIGN_CENTER, 0);
+    lv_obj_add_flag(addr_display_lbl, LV_OBJ_FLAG_HIDDEN);
+
+    btn_down = lv_btn_create(root_cont);
+    lv_obj_set_size(btn_down, LV_PCT(65), 55);
+    lv_obj_set_style_radius(btn_down, 14, 0);
+    lv_obj_set_style_bg_color(btn_down, lv_color_hex(0x2D6A4F), 0);
+    lv_obj_set_style_border_color(btn_down, lv_color_hex(0x1B4332), 0);
+    lv_obj_set_style_border_width(btn_down, 3, 0);
+    lv_obj_add_event_cb(btn_down, btn_down_event_cb, LV_EVENT_PRESSED, NULL);
+    lv_obj_add_event_cb(btn_down, btn_down_event_cb, LV_EVENT_RELEASED, NULL);
+    lv_obj_add_event_cb(btn_down, btn_down_event_cb, LV_EVENT_PRESS_LOST, NULL);
+    lv_obj_add_flag(btn_down, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_t *lbl_down = lv_label_create(btn_down);
+    lv_label_set_text(lbl_down, LV_SYMBOL_DOWN);
+    lv_obj_set_style_text_font(lbl_down, &FONT_BIG, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_center(lbl_down);
+
+    /* -- Main-mode widgets -- */
+
+    btn_check = lv_btn_create(root_cont);
+    lv_obj_set_size(btn_check, LV_PCT(65), 60);
     lv_obj_set_style_radius(btn_check, 18, 0);
     lv_obj_set_style_bg_color(btn_check, lv_color_hex(0x0F66D0), 0);
     lv_obj_set_style_border_color(btn_check, lv_color_hex(0x0A4EA6), 0);
@@ -514,9 +674,8 @@ int main(void)
     lv_obj_set_style_text_font(lbl_check, &FONT_BUTTON, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_center(lbl_check);
 
-    /* Button: Change Address */
-    btn_change = lv_btn_create(root);
-    lv_obj_set_size(btn_change, LV_PCT(90), 80);
+    btn_change = lv_btn_create(root_cont);
+    lv_obj_set_size(btn_change, LV_PCT(65), 60);
     lv_obj_set_style_radius(btn_change, 18, 0);
     lv_obj_set_style_bg_color(btn_change, lv_color_hex(0x155E63), 0);
     lv_obj_set_style_border_color(btn_change, lv_color_hex(0x0A4EA6), 0);
@@ -527,8 +686,24 @@ int main(void)
     lv_obj_set_style_text_font(lbl_change, &FONT_BUTTON, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_center(lbl_change);
 
-    /* Status label */
-    status_lbl = lv_label_create(root);
+    /* -- Change-mode confirm (hidden initially, placed after main btns in creation order) -- */
+
+    btn_confirm = lv_btn_create(root_cont);
+    lv_obj_set_size(btn_confirm, LV_PCT(65), 45);
+    lv_obj_set_style_radius(btn_confirm, 14, 0);
+    lv_obj_set_style_bg_color(btn_confirm, lv_color_hex(0x0F66D0), 0);
+    lv_obj_set_style_border_color(btn_confirm, lv_color_hex(0x0A4EA6), 0);
+    lv_obj_set_style_border_width(btn_confirm, 3, 0);
+    lv_obj_add_event_cb(btn_confirm, btn_confirm_event_cb, LV_EVENT_CLICKED, NULL);
+    lv_obj_set_style_margin_top(btn_confirm, 12, 0);
+    lv_obj_add_flag(btn_confirm, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_t *lbl_confirm = lv_label_create(btn_confirm);
+    lv_label_set_text(lbl_confirm, "Confirm");
+    lv_obj_set_style_text_font(lbl_confirm, &FONT_BUTTON, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_center(lbl_confirm);
+
+    /* Status label (main-mode, hidden until a scan/change starts) */
+    status_lbl = lv_label_create(root_cont);
     lv_obj_add_flag(status_lbl, LV_OBJ_FLAG_HIDDEN);
     lv_obj_set_width(status_lbl, LV_PCT(100));
     lv_obj_set_style_text_align(status_lbl, LV_TEXT_ALIGN_CENTER, 0);
@@ -552,6 +727,8 @@ int main(void)
     printk("Center calibration: X=%d  Y=%d\n", center_x, center_y);
 
     int last_dir_x = 0, last_dir_y = 0, last_click = 0;
+    int64_t last_press_ms = -1000000;
+    #define PRESS_DEBOUNCE_MS 200
     update_highlight();
 
     /* ---- Main loop ---- */
@@ -575,10 +752,44 @@ int main(void)
         int dx = (int)x_raw - center_x;
         int dy = (int)y_raw - center_y;
 
+        int64_t now_ms = k_uptime_get();
+
+        /*
+         * "Press" detection on 4-pin joystick: X forced to max (1023).
+         * Treat press as a rising-edge click and ignore UP/DOWN movement for a short
+         * debounce window. This prevents a physical press from also being read as
+         * an unintended UP/DOWN step (menu select or address increment).
+         */
+        int pressed = (x_raw >= JOY_MAX);
+        bool click_rising = (pressed && !last_click);
+        if (click_rising) {
+            last_press_ms = now_ms;
+
+            if (on_change_screen) {
+                btn_confirm_event_cb(NULL);
+            } else if (!scanning && !changing) {
+                if (selected_index == 0) {
+                    btn_check_event_cb(NULL);
+                } else {
+                    btn_change_event_cb(NULL);
+                }
+            } else if (scanning) {
+                scan_cancel = true;
+            }
+        }
+        last_click = pressed;
+
+        /* During debounce window, ignore direction changes */
+        if ((now_ms - last_press_ms) < PRESS_DEBOUNCE_MS) {
+            lv_timer_handler();
+            k_msleep(10);
+            continue;
+        }
+
         int dir_x = last_dir_x;
         int dir_y = last_dir_y;
 
-        /* X axis reserved (future menus) */
+        /* X axis: LEFT triggers "Back" on change screen */
         if (last_dir_x == 0) {
             if (dx < -DEADZONE_ENTER) dir_x = -1;
             else if (dx > DEADZONE_ENTER) dir_x = +1;
@@ -587,8 +798,13 @@ int main(void)
         } else if (last_dir_x == +1 && dx < DEADZONE_EXIT) {
             dir_x = 0;
         }
+
+        if (dir_x != last_dir_x && dir_x == -1 && on_change_screen) {
+            hide_change_screen();
+        }
         last_dir_x = dir_x;
 
+        /* Y axis */
         if (last_dir_y == 0) {
             if (dy < -DEADZONE_ENTER) dir_y = -1;   /* UP */
             else if (dy > DEADZONE_ENTER) dir_y = +1; /* DOWN */
@@ -599,13 +815,11 @@ int main(void)
         }
 
         if (dir_y != last_dir_y) {
-            if (selecting_change) {
+            if (on_change_screen) {
                 if (dir_y == -1) {
-                    change_candidate = (change_candidate - 2 + 64) % 64 + 1; /* wrap 1..64 */
-                    update_change_prompt();
+                    addr_increment();
                 } else if (dir_y == +1) {
-                    change_candidate = (change_candidate % 64) + 1;
-                    update_change_prompt();
+                    addr_decrement();
                 }
                 last_dir_y = dir_y;
             } else {
@@ -620,23 +834,14 @@ int main(void)
             }
         }
 
-        /* “Press” detection on 4-pin joystick: X forced to max (1023) */
-        int pressed = (x_raw >= JOY_MAX);
-        if (pressed != last_click) {
-            if (pressed) {
-                /* Trigger selected item */
-                if (!scanning && !changing) {
-                    if (selecting_change) {
-                        start_change_thread(change_candidate);
-                    } else if (selected_index == 0) {
-                        /* Check Address behaves exactly like before */
-                        btn_check_event_cb(NULL);
-                    } else {
-                        btn_change_event_cb(NULL);
-                    }
-                }
-            }
-            last_click = pressed;
+        /* Hold-to-repeat for touch UP/DOWN buttons */
+        if (up_held && k_uptime_get() >= hold_next_ms) {
+            addr_increment();
+            hold_next_ms = k_uptime_get() + HOLD_REPEAT_INTERVAL_MS;
+        }
+        if (down_held && k_uptime_get() >= hold_next_ms) {
+            addr_decrement();
+            hold_next_ms = k_uptime_get() + HOLD_REPEAT_INTERVAL_MS;
         }
 
         lv_timer_handler();

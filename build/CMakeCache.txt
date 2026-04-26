@@ -54,10 +54,10 @@ CACHED_SHIELD:STRING=st_b_lcd40_dsi1_mb1166_a09
 CACHED_SNIPPET:STRING=
 
 //Path to a program.
-CCACHE_FOUND:FILEPATH=CCACHE_FOUND-NOTFOUND
+CCACHE_FOUND:FILEPATH=C:/Users/swayd/Downloads/winlibs-x86_64-posix-seh-gcc-15.2.0-mingw-w64msvcrt-13.0.0-r1/mingw64/bin/ccache.exe
 
 //Path to a program.
-CCACHE_PROGRAM:FILEPATH=CCACHE_PROGRAM-NOTFOUND
+CCACHE_PROGRAM:FILEPATH=C:/Users/swayd/Downloads/winlibs-x86_64-posix-seh-gcc-15.2.0-mingw-w64msvcrt-13.0.0-r1/mingw64/bin/ccache.exe
 
 //Path to a program.
 CMAKE_ADDR2LINE:FILEPATH=C:/ZephyrSDK/zephyr-sdk-0.17.4/arm-zephyr-eabi/bin/arm-zephyr-eabi-addr2line.exe
@@ -151,7 +151,7 @@ CMAKE_C_FLAGS_RELEASE:STRING=-O3 -DNDEBUG
 CMAKE_C_FLAGS_RELWITHDEBINFO:STRING=-O2 -g -DNDEBUG
 
 //Path to a program.
-CMAKE_DLLTOOL:FILEPATH=CMAKE_DLLTOOL-NOTFOUND
+CMAKE_DLLTOOL:FILEPATH=C:/Users/swayd/Downloads/winlibs-x86_64-posix-seh-gcc-15.2.0-mingw-w64msvcrt-13.0.0-r1/mingw64/bin/dlltool.exe
 
 //Flags used by the linker during all build types.
 CMAKE_EXE_LINKER_FLAGS:STRING=
